@@ -126,7 +126,7 @@ export function TimelinePath({ scrollProgress, activeSection }: TimelinePathProp
       const event = timelineEvents[i];
       const eventProgress = event.position;
       const distance = Math.abs(progressRef.current - eventProgress);
-      
+
       if (distance < 0.15) {
         const intensity = 1 - distance / 0.15;
         mesh.scale.setScalar(1 + intensity * 0.5);
@@ -160,7 +160,7 @@ export function TimelinePath({ scrollProgress, activeSection }: TimelinePathProp
   return (
     <group>
       <mesh geometry={tubeGeometry} material={tubeMaterial} />
-      
+
       {eventPoints.map(({ point, id, type, title, date }) => {
         const meshIndex = timelineEvents.findIndex(e => e.id === id);
         return (
@@ -176,25 +176,21 @@ export function TimelinePath({ scrollProgress, activeSection }: TimelinePathProp
                 roughness: 0.3,
               })}
             />
-            <points>
-              <bufferGeometry>
-                <bufferAttribute attach="attributes-position" array={new Float32Array([0, 0, 0])} itemSize={3} />
-                <bufferAttribute attach="attributes-size" array={new Float32Array([2])} itemSize={1} />
-              </bufferGeometry>
-              <pointsMaterial
-                color={typeColors[type]}
-                size={0.8}
-                transparent
-                opacity={0.6}
-                blending={THREE.AdditiveBlending}
-                depthWrite={false}
-              />
-            </points>
+            {/* Particle glow around each event node */}
+            <points
+              geometry={new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0)])}
+              material={new THREE.PointsMaterial({
+                color: typeColors[type],
+                size: 0.8,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false,
+              })}
+            />
           </group>
         );
       })}
-
-      {/* Timeline path line - rendered as sphere chain */}
     </group>
   );
 }

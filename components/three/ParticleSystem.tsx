@@ -162,30 +162,36 @@ export function ParticleSystem({ scrollProgress, activeSection }: ParticleSystem
 
   if (reducedMotion || particleCount === 0) return null;
 
+  // Build geometry imperatively (more stable across R3F versions)
+  const geometry = useMemo(() => {
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geom.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+    geom.setAttribute('opacity', new THREE.BufferAttribute(opacities, 1));
+    geom.setAttribute('customColor', new THREE.BufferAttribute(colors, 3));
+    geom.setAttribute('particleType', new THREE.BufferAttribute(types, 1));
+    return geom;
+  }, [positions, sizes, opacities, colors, types]);
+
+  const material = useMemo(() => {
+    const mat = new THREE.ShaderMaterial({
+      vertexShader: particleVertexShader,
+      fragmentShader: particleFragmentShader,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      uniforms: {
+        uTime: { value: 0 },
+        uScrollProgress: { value: 0 },
+        uActiveSection: { value: 0 },
+      },
+    });
+    return mat;
+  }, []);
+
   return (
     <group>
-      <points ref={pointsRef as React.Ref<THREE.Points>}>
-        <bufferGeometry ref={geometryRef as React.Ref<THREE.BufferGeometry>}>
-          <bufferAttribute attach="attributes-position" array={positions} itemSize={3} />
-          <bufferAttribute attach="attributes-size" array={sizes} itemSize={1} />
-          <bufferAttribute attach="attributes-opacity" array={opacities} itemSize={1} />
-          <bufferAttribute attach="attributes-customColor" array={colors} itemSize={3} />
-          <bufferAttribute attach="attributes-particleType" array={types} itemSize={1} />
-        </bufferGeometry>
-        <shaderMaterial
-          ref={materialRef as React.Ref<THREE.ShaderMaterial>}
-          vertexShader={particleVertexShader}
-          fragmentShader={particleFragmentShader}
-          transparent
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-          uniforms={{
-            uTime: { value: 0 },
-            uScrollProgress: { value: 0 },
-            uActiveSection: { value: 0 },
-          }}
-        />
-      </points>
+      <points ref={pointsRef as React.Ref<THREE.Points>} geometry={geometry} material={material} />
     </group>
   );
 }
