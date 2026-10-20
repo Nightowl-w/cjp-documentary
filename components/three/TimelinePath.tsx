@@ -1,7 +1,8 @@
 'use client';
 
-import { Group, CatmullRomCurve3, Vector3, TubeGeometry, Mesh, MeshBasicMaterial, SphereGeometry, MeshStandardMaterial, Line, LineBasicMaterial, Points, BufferGeometry, BufferAttribute, AdditiveBlending, useFrame } from 'three';
+import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useEffect } from 'react';
+import * as THREE from 'three';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 
 interface TimelineEvent {
@@ -72,7 +73,7 @@ const timelineEvents: TimelineEvent[] = [
   },
 ];
 
-const typeColors = {
+const typeColors: Record<string, number> = {
   protest: 0xd4a843,
   legal: 0x0d9488,
   violence: 0xb91c1c,
@@ -80,7 +81,7 @@ const typeColors = {
   statement: 0xa1a1aa,
 };
 
-const typeLabels = {
+const typeLabels: Record<string, string> = {
   protest: 'PROTEST',
   legal: 'LEGAL',
   violence: 'CRACKDOWN',
@@ -95,19 +96,19 @@ interface TimelinePathProps {
 
 export function TimelinePath({ scrollProgress, activeSection }: TimelinePathProps) {
   const { reducedMotion } = usePreferences();
-  const curveRef = useRef<CatmullRomCurve3>(null);
-  const eventMeshesRef = useRef<Mesh[]>([]);
+  const curveRef = useRef<THREE.CatmullRomCurve3 | null>(null);
+  const eventMeshesRef = useRef<THREE.Mesh[]>([]);
   const progressRef = useRef(0);
 
   const curve = useMemo(() => {
     const points = [
-      new Vector3(-25, 8, -10),
-      new Vector3(-10, 12, -5),
-      new Vector3(0, 15, 0),
-      new Vector3(10, 12, 5),
-      new Vector3(25, 8, 10),
+      new THREE.Vector3(-25, 8, -10),
+      new THREE.Vector3(-10, 12, -5),
+      new THREE.Vector3(0, 15, 0),
+      new THREE.Vector3(10, 12, 5),
+      new THREE.Vector3(25, 8, 10),
     ];
-    const curve = new CatmullRomCurve3(points);
+    const curve = new THREE.CatmullRomCurve3(points);
     curve.closed = false;
     curveRef.current = curve;
     return curve;
@@ -129,10 +130,10 @@ export function TimelinePath({ scrollProgress, activeSection }: TimelinePathProp
       if (distance < 0.15) {
         const intensity = 1 - distance / 0.15;
         mesh.scale.setScalar(1 + intensity * 0.5);
-        mesh.material.emissiveIntensity = intensity * 0.5;
+        (mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = intensity * 0.5;
       } else {
         mesh.scale.setScalar(1);
-        mesh.material.emissiveIntensity = 0;
+        (mesh.material as THREE.MeshStandardMaterial).emissiveIntensity = 0;
       }
 
       mesh.rotation.y += delta * 0.2;
@@ -141,8 +142,8 @@ export function TimelinePath({ scrollProgress, activeSection }: TimelinePathProp
 
   if (reducedMotion) return null;
 
-  const tubeGeometry = useMemo(() => new TubeGeometry(curve, 100, 0.15, 8, false), [curve]);
-  const tubeMaterial = useMemo(() => new MeshBasicMaterial({
+  const tubeGeometry = useMemo(() => new THREE.TubeGeometry(curve, 100, 0.15, 8, false), [curve]);
+  const tubeMaterial = useMemo(() => new THREE.MeshBasicMaterial({
     color: 0xd4a843,
     transparent: true,
     opacity: 0.3,
@@ -157,69 +158,43 @@ export function TimelinePath({ scrollProgress, activeSection }: TimelinePathProp
   }, [curve]);
 
   return (
-    <Group>
-      <Mesh geometry={tubeGeometry} material={tubeMaterial} />
+    <group>
+      <mesh geometry={tubeGeometry} material={tubeMaterial} />
       
-      {eventPoints.map(({ point, id, type, title, date }) => (
-        <Group key={id} position={point.toArray()}>
-          <Mesh
-            ref={el => { if (el) eventMeshesRef.current[timelineEvents.findIndex(e => e.id === id)] = el; }}
-            geometry={new SphereGeometry(0.4, 16, 16)}
-            material={new MeshStandardMaterial({
-              color: typeColors[type],
-              emissive: typeColors[type],
-              emissiveIntensity: 0,
-              metalness: 0.5,
-              roughness: 0.3,
-            })}
-            userData={{ eventId: id, type }}
-          />
-          <Points>
-            <bufferGeometry>
-              <bufferAttribute
-                attach="attributes-position"
-                array={new Float32Array([0, 0, 0])}
-                itemSize={3}
-              />
-              <bufferAttribute
-                attach="attributes-size"
-                array={new Float32Array([2])}
-                itemSize={1}
-              />
-            </bufferGeometry>
-            <PointsMaterial
-              color={typeColors[type]}
-              size={0.8}
-              transparent
-              opacity={0.6}
-              blending={AdditiveBlending}
-              depthWrite={false}
+      {eventPoints.map(({ point, id, type, title, date }) => {
+        const meshIndex = timelineEvents.findIndex(e => e.id === id);
+        return (
+          <group key={id} position={[point.x, point.y, point.z]}>
+            <mesh
+              ref={el => { if (el) eventMeshesRef.current[meshIndex] = el; }}
+              geometry={new THREE.SphereGeometry(0.4, 16, 16)}
+              material={new THREE.MeshStandardMaterial({
+                color: typeColors[type],
+                emissive: typeColors[type],
+                emissiveIntensity: 0,
+                metalness: 0.5,
+                roughness: 0.3,
+              })}
             />
-          </Points>
-        </Group>
-      ))}
+            <points>
+              <bufferGeometry>
+                <bufferAttribute attach="attributes-position" array={new Float32Array([0, 0, 0])} itemSize={3} />
+                <bufferAttribute attach="attributes-size" array={new Float32Array([2])} itemSize={1} />
+              </bufferGeometry>
+              <pointsMaterial
+                color={typeColors[type]}
+                size={0.8}
+                transparent
+                opacity={0.6}
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+              />
+            </points>
+          </group>
+        );
+      })}
 
-      <Line
-        geometry={new BufferGeometry().setFromPoints(curve.getPoints(50))}
-        material={new LineBasicMaterial({
-          color: 0xd4a843,
-          transparent: true,
-          opacity: 0.5,
-          linewidth: 2,
-        })}
-      />
-    </Group>
+      {/* Timeline path line - rendered as sphere chain */}
+    </group>
   );
 }
-
-function PointsMaterial(props: any) {
-  return <shaderMaterial {...props} />;
-}
-
-function shaderMaterial(props: any) {
-  const { children, ...rest } = props;
-  return <primitive object={new THREE.PointsMaterial(rest)} />;
-}
-
-import { primitive } from '@react-three/fiber';
-import { PointsMaterial as ThreePointsMaterial } from 'three';

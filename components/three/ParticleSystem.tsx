@@ -1,7 +1,8 @@
 'use client';
 
-import { Points, BufferGeometry, BufferAttribute, ShaderMaterial, AdditiveBlending, Group, useFrame } from 'three';
+import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
+import * as THREE from 'three';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 
 interface ParticleSystemProps {
@@ -51,9 +52,9 @@ const particleFragmentShader = `
 
 export function ParticleSystem({ scrollProgress, activeSection }: ParticleSystemProps) {
   const { reducedMotion } = usePreferences();
-  const pointsRef = useRef<Points>(null);
-  const geometryRef = useRef<BufferGeometry>(null);
-  const materialRef = useRef<ShaderMaterial>(null);
+  const pointsRef = useRef<THREE.Points>(null);
+  const geometryRef = useRef<THREE.BufferGeometry>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
   const timeRef = useRef(0);
 
   const particleCount = useMemo(() => reducedMotion ? 0 : 2000, [reducedMotion]);
@@ -118,7 +119,7 @@ export function ParticleSystem({ scrollProgress, activeSection }: ParticleSystem
     if (reducedMotion || !pointsRef.current) return;
 
     timeRef.current += delta;
-    const positions = geometryRef.current?.getAttribute('position');
+    const positions = geometryRef.current?.attributes.position;
     if (!positions) return;
 
     const scrollInfluence = scrollProgress * 0.5;
@@ -162,12 +163,9 @@ export function ParticleSystem({ scrollProgress, activeSection }: ParticleSystem
   if (reducedMotion || particleCount === 0) return null;
 
   return (
-    <Group>
-      <Points
-        ref={pointsRef}
-        onPointerMissed={(e) => e.stopPropagation()}
-      >
-        <bufferGeometry ref={geometryRef}>
+    <group>
+      <points ref={pointsRef as React.Ref<THREE.Points>}>
+        <bufferGeometry ref={geometryRef as React.Ref<THREE.BufferGeometry>}>
           <bufferAttribute attach="attributes-position" array={positions} itemSize={3} />
           <bufferAttribute attach="attributes-size" array={sizes} itemSize={1} />
           <bufferAttribute attach="attributes-opacity" array={opacities} itemSize={1} />
@@ -175,19 +173,19 @@ export function ParticleSystem({ scrollProgress, activeSection }: ParticleSystem
           <bufferAttribute attach="attributes-particleType" array={types} itemSize={1} />
         </bufferGeometry>
         <shaderMaterial
-          ref={materialRef}
+          ref={materialRef as React.Ref<THREE.ShaderMaterial>}
           vertexShader={particleVertexShader}
           fragmentShader={particleFragmentShader}
           transparent
           depthWrite={false}
-          blending={AdditiveBlending}
+          blending={THREE.AdditiveBlending}
           uniforms={{
             uTime: { value: 0 },
             uScrollProgress: { value: 0 },
             uActiveSection: { value: 0 },
           }}
         />
-      </Points>
-    </Group>
+      </points>
+    </group>
   );
 }

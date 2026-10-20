@@ -48,7 +48,7 @@ const config: Config = {
         'body-lg': ['1.125rem', { lineHeight: '1.7', letterSpacing: '0' }],
         'body-base': ['1rem', { lineHeight: '1.7', letterSpacing: '0' }],
         'body-sm': ['0.875rem', { lineHeight: '1.6', letterSpacing: '0' }],
-        'caption': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.02em', textTransform: 'uppercase' }],
+        'caption': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.02em' }],
       },
       spacing: {
         '18': '4.5rem',

@@ -257,7 +257,7 @@
 
 /* Transcript */
 .transcript {
-  @apply prose prose-invert max-w-none text-muted-foreground;
+  @apply max-w-none text-muted-foreground leading-relaxed;
 }
 .transcript [data-active] {
   @apply text-foreground font-medium;

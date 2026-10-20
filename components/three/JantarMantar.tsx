@@ -1,6 +1,7 @@
 'use client';
 
-import { Group, Mesh, CylinderGeometry, ConeGeometry, SphereGeometry, BoxGeometry, TubeGeometry, CatmullRomCurve3, Vector3, MeshStandardMaterial, MeshPhysicalMaterial, DoubleSide, useFrame } from 'three';
+import { Group, Mesh, CylinderGeometry, ConeGeometry, SphereGeometry, BoxGeometry, TubeGeometry, CatmullRomCurve3, Vector3, MeshStandardMaterial, MeshPhysicalMaterial, DoubleSide } from 'three';
+import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 
@@ -46,13 +47,13 @@ export function JantarMantar({ scrollProgress, activeSection }: JantarMantarProp
   });
 
   return (
-    <Group ref={groupRef} position={[0, 0, 0]}>
-      {ground}
-      <Group position={[-15, 0, -10]}>{samratYantra}</Group>
-      <Group position={[15, 0, -10]}>{jaiPrakash}</Group>
-      <Group position={[-15, 0, 15]}>{ramYantra}</Group>
-      <Group position={[15, 0, 15]}>{misraYantra}</Group>
-    </Group>
+    <group ref={groupRef} position={[0, 0, 0]}>
+      <group position={[-15, 0, -10]}>{samratYantra as any}</group>
+      <group position={[15, 0, -10]}>{jaiPrakash as any}</group>
+      <group position={[-15, 0, 15]}>{ramYantra as any}</group>
+      <group position={[15, 0, 15]}>{misraYantra as any}</group>
+      <group position={[0, -0.25, 0]}>{ground as any}</group>
+    </group>
   );
 }
 

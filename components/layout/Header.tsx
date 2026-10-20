@@ -1,6 +1,7 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -20,8 +21,6 @@ export function Header() {
   const { theme, toggleTheme, reducedMotion } = usePreferences();
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { scrollY } = useScroll();
-  const scrolled = useTransform(scrollY, [0, 100], [0, 1]);
 
   return (
     <motion.header
@@ -29,7 +28,7 @@ export function Header() {
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         'bg-background/80 backdrop-blur-md border-b border-border/50'
       )}
-      style={{ boxShadow: scrolled.getValue() > 0.1 ? '0 4px 30px -10px hsl(var(--background) / 0.5)' : 'none' }}
+      style={{ boxShadow: '0 4px 30px -10px hsl(var(--background) / 0.3)' }}
     >
       <div className="container-wide">
         <div className="flex h-16 items-center justify-between">
@@ -114,5 +113,3 @@ export function Header() {
     </motion.header>
   );
 }
-
-import { useState } from 'react';
