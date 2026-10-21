@@ -7,6 +7,7 @@ An independent, unofficial interactive documentary on the 2026 Cockroach Janta P
 ## What the site contains
 
 - **Cinematic 3D scene** — a stylised, non-survey reconstruction of Jantar Mantar's instruments, built with vanilla Three.js and scroll-driven camera motion.
+- **Interactive 3D map** — an explorable map of the observatory, the protest camp and the route toward Parliament, with an eight-stop guided tour, golden-hour/day/night lighting, a march-route overlay and fullscreen mode. Drag to orbit, click labels for details, or press *Play the tour* to present it.
 - **Real audio excerpts** — recorded voices from the protest (Abhijeet Dipke, Sonam Wangchuk, students, a parent, a CJP organiser and a crowd chant), each credited with its source and timestamp. No text-to-speech, no voice cloning.
 - **Reported timeline** — May to July 2026, with disputed figures attributed to their source.
 - **Outcome section** — the resignation and the written assurances that ended the fast, plus what still needs watching.
@@ -67,7 +68,11 @@ cjp-documentary/
 │   └── globals.css         # Design tokens
 ├── components/
 │   ├── pages/ClientPage.tsx        # Sections, timeline, voices data
-│   ├── three/Scene.tsx             # Vanilla Three.js scene + monuments
+│   ├── three/Scene.tsx             # Vanilla Three.js background scene
+│   ├── three/JantarMantarMap.tsx   # Interactive map: UI, tour, labels
+│   ├── three/map/world.ts          # Map geometry, lighting, animation
+│   ├── three/map/orbit.ts          # Orbit camera + fly-to controller
+│   ├── three/map/tourData.ts       # Hotspots and tour narration
 │   ├── audio/VoicePlayer.tsx       # Play, pause, seek, duration
 │   ├── audio/useAmbientAudio.ts    # Generative Web Audio ambience
 │   ├── layout/Header.tsx

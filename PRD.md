@@ -36,7 +36,7 @@ An immersive, interactive documentary website documenting the Cockroach Janta Pa
 2. **Context** — A courtroom remark, the NEET/CBSE/SSC exam crisis, and why Jantar Mantar
 3. **Timeline** — Reported events from May to July 2026, disputed figures attributed
 4. **Voices** — Real audio excerpts with source credit, timestamp and bilingual transcript
-5. **The Site** — Honest guide to the 3D scene and the protest grounds
+5. **The Site** — Interactive 3D map of the observatory and protest camp, with an eight-stop guided tour, day/night lighting, a march-route overlay and fullscreen presentation mode
 6. **Outcome** — The resignation, the written assurances, and what still needs watching
 7. **Sources** — Direct links to reporting and official channels, plus corrections
 8. **Credits / About** — Methodology, audio/fair use, privacy, credits

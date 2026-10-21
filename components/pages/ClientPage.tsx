@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll } from 'framer-motion';
 import { Scene } from '@/components/three/Scene';
+import { JantarMantarMap } from '@/components/three/JantarMantarMap';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/Button';
@@ -27,7 +28,7 @@ import {
   Newspaper,
   Radio,
   Code2,
-  Landmark,
+  Map as MapIcon,
   Gavel,
   ShieldCheck,
   Eye,
@@ -463,6 +464,45 @@ export default function ClientPage() {
 
         <Scene scrollProgress={scrollProgress} activeSection={activeSection} />
 
+        {/* Section dots — presentation-friendly quick navigation (desktop) */}
+        <nav
+          className="pointer-events-none fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end gap-3 lg:flex"
+          aria-label="Section navigation"
+        >
+          {sections.map((section) => {
+            const isActive = activeSection === section.index;
+            return (
+              <button
+                key={section.id}
+                type="button"
+                onClick={() => scrollToSection(section.index)}
+                aria-label={`Go to ${section.name}`}
+                aria-current={isActive ? 'true' : undefined}
+                className="pointer-events-auto group flex items-center gap-2"
+              >
+                <span
+                  className={cn(
+                    'rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] transition-opacity',
+                    isActive
+                      ? 'border-accent-gold/50 bg-black/70 text-accent-gold opacity-100'
+                      : 'border-white/15 bg-black/60 text-white/70 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
+                  )}
+                >
+                  {section.name}
+                </span>
+                <span
+                  className={cn(
+                    'h-2.5 w-2.5 rounded-full border transition-all',
+                    isActive
+                      ? 'scale-125 border-accent-gold bg-accent-gold'
+                      : 'border-white/30 bg-white/10 group-hover:border-white/60'
+                  )}
+                />
+              </button>
+            );
+          })}
+        </nav>
+
         <main className="relative z-10 pt-16">
           {/* Hero Section */}
           <section
@@ -526,6 +566,28 @@ export default function ClientPage() {
                   <Button size="lg" onClick={() => scrollToSection(1)}>
                     <span>Begin Documentary</span>
                     <ArrowDown className="w-5 h-5" aria-hidden="true" />
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    onClick={() => {
+                      const map = document.getElementById('jantar-mantar-map');
+                      if (map) {
+                        map.scrollIntoView({
+                          behavior: reducedMotion ? 'auto' : 'smooth',
+                          block: 'center',
+                        });
+                      } else {
+                        scrollToSection(4);
+                      }
+                      window.setTimeout(
+                        () => window.dispatchEvent(new CustomEvent('cjp:map-tour')),
+                        reducedMotion ? 600 : 1200
+                      );
+                    }}
+                  >
+                    <MapIcon className="w-5 h-5" aria-hidden="true" />
+                    <span>Explore 3D Map</span>
                   </Button>
                   <Button
                     variant="ghost"
@@ -830,38 +892,30 @@ export default function ClientPage() {
                   Stand Where They Stood
                 </h2>
                 <p className="text-muted-foreground">
-                  A short guide to the observatory-turned-protest site. The 3D scene behind this
-                  page sets the mood; the observations below come from reporting.
+                  An interactive 3D map of Jantar Mantar and the protest ground: orbit it, take the
+                  guided tour, switch the light from golden hour to night, and trace the march that
+                  was stopped before it reached Parliament.
                 </p>
               </motion.div>
 
               <motion.div
-                className="card p-8"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: '-80px' }}
                 transition={{ duration: 0.8 }}
               >
-                <div className="flex flex-col md:flex-row md:items-start gap-6">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center">
-                    <Landmark className="w-6 h-6 text-accent-gold" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-medium mb-3">The 3D scene behind this page</h3>
-                    <p className="text-muted-foreground leading-relaxed mb-3">
-                      The fixed canvas is a stylised, non-survey reconstruction of Jantar Mantar —
-                      its instruments, a protest arc, dust and flags. It uses simple geometry and
-                      particles rather than photogrammetry, and it is not a map of the ground.
-                    </p>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Use it as atmosphere. The notes in the cards are drawn from the reporting and
-                      recordings credited across this page.
-                    </p>
-                  </div>
-                </div>
+                <JantarMantarMap />
               </motion.div>
 
-              <div className="grid md:grid-cols-3 gap-6 mt-12">
+              <div className="mt-16 mb-8 max-w-3xl">
+                <h3 className="text-xl font-medium mb-2">Field notes</h3>
+                <p className="text-muted-foreground text-sm">
+                  What the map shows, in words. The full-page background canvas is a separate
+                  ambient sketch; the interactive map above is the one to explore.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
                 {groundHotspots.map((hotspot, i) => (
                   <motion.article
                     key={hotspot.id}
