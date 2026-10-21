@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import { Scene } from '@/components/three/Scene';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 import { cn } from '@/lib/utils';
-import { ArrowDown, Volume2, VolumeX, Play, ChevronRight, ChevronLeft, Mic, Users, Heart, MapPin, Scale, BookOpen } from 'lucide-react';
+import { ArrowDown, Volume2, VolumeX, Play, ChevronRight, Mic, Users, Heart, MapPin, Scale, BookOpen } from 'lucide-react';
 
 const sections = [
   { id: 'hero', name: 'Hero', index: 0 },
@@ -194,51 +194,43 @@ const creditsCategories = [
 
 export default function ClientPage() {
   const { reducedMotion } = usePreferences();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center text-white">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-gold" />
-      </div>
-    );
-  }
-
   const [activeSection, setActiveSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const { scrollY } = useScroll();
-  const progress = useTransform(scrollY, [0, 5000], [0, 1]);
+  // Every hook runs unconditionally, in a stable order. The previous version
+  // returned early before these hooks while `mounted` was false, which threw
+  // "Rendered more hooks than during the previous render" right after hydration.
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
-    const unsub = progress.onChange((v) => {
-      setScrollProgress(v);
-      const idx = Math.min(Math.floor(v * (sections.length - 1)), sections.length - 1);
-      setActiveSection(idx);
+    return scrollYProgress.on('change', (value) => {
+      setScrollProgress(value);
+      const index = Math.min(Math.floor(value * sections.length), sections.length - 1);
+      setActiveSection(index);
     });
-    return unsub;
-  }, [progress]);
+  }, [scrollYProgress]);
 
   const scrollToSection = (index: number) => {
     sectionRefs.current[index]?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
   };
 
   const toggleAudio = () => {
-    if (audioRef.current) {
-      if (audioPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(() => {});
-      }
-      setAudioPlaying(!audioPlaying);
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audioPlaying) {
+      audio.pause();
+      setAudioPlaying(false);
+      return;
     }
+
+    audio
+      .play()
+      .then(() => setAudioPlaying(true))
+      .catch(() => setAudioPlaying(false));
   };
 
   return (
@@ -248,11 +240,11 @@ export default function ClientPage() {
           ref={audioRef}
           src="/audio/ambient.mp3"
           loop
-          preload="auto"
+          preload="none"
           className="hidden"
         />
         <Header />
-        
+
         <Scene scrollProgress={scrollProgress} activeSection={activeSection} />
 
         <main className="relative z-10 pt-16">
@@ -260,7 +252,7 @@ export default function ClientPage() {
           <section
             ref={(el) => { sectionRefs.current[0] = el; }}
             id="hero"
-            className="relative min-h-screen flex items-center justify-center overflow-hidden"
+            className="relative flex min-h-[calc(100svh-4rem)] items-center justify-center overflow-hidden"
             aria-label="Introduction"
           >
             <div className="container-narrow relative z-10">
@@ -325,18 +317,16 @@ export default function ClientPage() {
                   </Button>
                 </motion.div>
               </motion.div>
-
-              <motion.div
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <ArrowDown className="w-6 h-6" />
-                <span className="text-caption">Scroll to Explore</span>
-              </motion.div>
             </div>
 
-            <div className="canvas-fallback hidden absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
+            <motion.div
+              className="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-muted-foreground sm:flex"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <ArrowDown className="w-6 h-6" />
+              <span className="text-caption">Scroll to Explore</span>
+            </motion.div>
           </section>
 
           {/* Context Section */}

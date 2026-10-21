@@ -72,6 +72,10 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
   ::selection {
     @apply bg-accent-gold/30 text-foreground;
   }

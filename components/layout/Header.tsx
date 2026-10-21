@@ -9,12 +9,12 @@ import { usePathname } from 'next/navigation';
 import { Sun, Moon, Menu, X, Scale, BookOpen, MapPin, Mic, Users, Heart } from 'lucide-react';
 
 const navItems = [
-  { href: '#context', label: 'Context', icon: BookOpen },
-  { href: '#timeline', label: 'Timeline', icon: MapPin },
-  { href: '#voices', label: 'Voices', icon: Mic },
-  { href: '#ground', label: 'Ground View', icon: Users },
-  { href: '#solidarity', label: 'Solidarity', icon: Heart },
-  { href: '#action', label: 'Take Action', icon: Scale },
+  { href: '/#context', label: 'Context', icon: BookOpen },
+  { href: '/#timeline', label: 'Timeline', icon: MapPin },
+  { href: '/#voices', label: 'Voices', icon: Mic },
+  { href: '/#ground', label: 'Ground View', icon: Users },
+  { href: '/#solidarity', label: 'Solidarity', icon: Heart },
+  { href: '/#action', label: 'Take Action', icon: Scale },
 ];
 
 export function Header() {

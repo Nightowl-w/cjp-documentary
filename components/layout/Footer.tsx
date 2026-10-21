@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Github, Twitter, Globe, Scale, Heart, Users, BookOpen } from 'lucide-react';
+import { Code2, Share2, Globe, Scale, Heart, Users, BookOpen } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -17,10 +17,10 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent-gold transition-colors" aria-label="GitHub">
-                <Github className="w-5 h-5" />
+                <Code2 className="w-5 h-5" />
               </a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent-gold transition-colors" aria-label="Twitter">
-                <Twitter className="w-5 h-5" />
+                <Share2 className="w-5 h-5" />
               </a>
               <a href="https://cjp.org.in" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent-gold transition-colors" aria-label="CJP Official Website">
                 <Globe className="w-5 h-5" />
@@ -33,12 +33,12 @@ export function Footer() {
             <nav aria-label="Footer navigation">
               <ul className="space-y-3">
                 {[
-                  { href: '#context', label: 'Historical Context', icon: BookOpen },
-                  { href: '#timeline', label: 'Interactive Timeline', icon: Scale },
-                  { href: '#voices', label: 'Voices & Testimonies', icon: Heart },
-                  { href: '#ground', label: 'Ground View', icon: Users },
-                  { href: '#solidarity', label: 'Solidarity Map', icon: Globe },
-                  { href: '#action', label: 'Take Action', icon: Scale },
+                  { href: '/#context', label: 'Historical Context', icon: BookOpen },
+                  { href: '/#timeline', label: 'Interactive Timeline', icon: Scale },
+                  { href: '/#voices', label: 'Voices & Testimonies', icon: Heart },
+                  { href: '/#ground', label: 'Ground View', icon: Users },
+                  { href: '/#solidarity', label: 'Solidarity Map', icon: Globe },
+                  { href: '/#action', label: 'Take Action', icon: Scale },
                 ].map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent-gold transition-colors group">
@@ -55,11 +55,11 @@ export function Footer() {
             <h3 className="font-display font-medium text-lg mb-4">Resources</h3>
             <ul className="space-y-3">
               {[
-                { label: 'Legal Aid Contacts', href: '#action' },
-                { label: 'Medical Support', href: '#action' },
-                { label: 'Documentation Archive', href: '#action' },
-                { label: 'Press Kit', href: '#action' },
-                { label: 'Educational Materials', href: '#action' },
+                { label: 'Legal Aid Contacts', href: '/#action' },
+                { label: 'Medical Support', href: '/#action' },
+                { label: 'Documentation Archive', href: '/#action' },
+                { label: 'Press Kit', href: '/#action' },
+                { label: 'Educational Materials', href: '/#action' },
                 { label: 'Donate to CJP', href: 'https://cjp.org.in/donate', external: true },
               ].map((item) => (
                 <li key={item.label}>
@@ -96,10 +96,10 @@ export function Footer() {
             © {currentYear} CJP Documentary Project. All rights reserved. Content used under fair use for documentation purposes.
           </p>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <Link href="/privacy" className="hover:text-accent-gold transition-colors">Privacy</Link>
-            <Link href="/methodology" className="hover:text-accent-gold transition-colors">Methodology</Link>
-            <Link href="/credits" className="hover:text-accent-gold transition-colors">Credits</Link>
-            <Link href="/contact" className="hover:text-accent-gold transition-colors">Contact</Link>
+            <Link href="/about#privacy" className="hover:text-accent-gold transition-colors">Privacy</Link>
+            <Link href="/about#methodology" className="hover:text-accent-gold transition-colors">Methodology</Link>
+            <Link href="/#credits" className="hover:text-accent-gold transition-colors">Credits</Link>
+            <Link href="/about#contact" className="hover:text-accent-gold transition-colors">Contact</Link>
           </div>
         </div>
       </div>

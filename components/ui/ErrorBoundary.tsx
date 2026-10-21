@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, ReactNode, ErrorInfo } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -9,43 +9,49 @@ interface ErrorBoundaryProps {
 
 interface ErrorBoundaryState {
   hasError: boolean;
-  error: Error | null;
 }
 
-export function ErrorBoundary({ children, fallback }: ErrorBoundaryProps) {
-  const [state, setState] = useState<ErrorBoundaryState>({
-    hasError: false,
-    error: null,
-  });
+/**
+ * Real React error boundary. Class components are required: a function
+ * component cannot catch render errors (the previous implementation was a
+ * function, so it never intercepted anything).
+ */
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { hasError: false };
 
-  const staticGetDerivedStateFromError = (error: Error): ErrorBoundaryState => ({
-    hasError: true,
-    error,
-  });
-
-  useEffect(() => {
-    if (state.hasError && state.error) {
-      console.error('ErrorBoundary caught:', state.error);
-    }
-  }, [state]);
-
-  if (state.hasError) {
-    if (fallback) return <>{fallback}</>;
-    return (
-      <div className="flex h-screen items-center justify-center bg-black text-white p-4">
-        <div className="text-center max-w-md">
-          <h2 className="text-xl font-medium text-accent-gold mb-4">Documentary loading...</h2>
-          <p className="text-muted-foreground mb-4">Please refresh the page to continue.</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="btn-primary px-6 py-3"
-          >
-            Refresh
-          </button>
-        </div>
-      </div>
-    );
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true };
   }
 
-  return children;
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('[error-boundary]', error, info.componentStack);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) return this.props.fallback;
+
+      return (
+        <div className="flex min-h-screen items-center justify-center bg-background p-6 text-foreground">
+          <div className="max-w-md text-center">
+            <h2 className="mb-3 font-display text-2xl font-light gradient-gold">
+              Something interrupted the story
+            </h2>
+            <p className="mb-6 text-sm text-muted-foreground">
+              The documentary hit an unexpected error. Reload to continue from the beginning.
+            </p>
+            <button
+              type="button"
+              onClick={() => window.location.reload()}
+              className="btn-primary"
+            >
+              Reload documentary
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
 }

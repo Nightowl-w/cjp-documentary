@@ -11,7 +11,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ['@react-three/fiber', '@react-three/drei', 'lucide-react'],
+    optimizePackageImports: ['lucide-react'],
   },
   headers: async () => [
     {

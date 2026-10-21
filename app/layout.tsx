@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   creator: 'CJP Documentary Project',
   publisher: 'CJP Documentary Project',
   robots: 'index, follow',
+  metadataBase: new URL('https://cjp-documentary.vercel.app'),
   openGraph: {
     type: 'website',
     locale: 'en_IN',
