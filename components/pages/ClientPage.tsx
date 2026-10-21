@@ -7,9 +7,11 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/Button';
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary';
+import { VoicePlayer } from '@/components/audio/VoicePlayer';
+import { useAmbientAudio } from '@/components/audio/useAmbientAudio';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 import { cn } from '@/lib/utils';
-import { ArrowDown, Volume2, VolumeX, Play, ChevronRight, Mic, Users, Heart, MapPin, Scale, BookOpen } from 'lucide-react';
+import { ArrowDown, Volume2, VolumeX, ChevronRight, Mic, Users, Heart, MapPin, Scale, BookOpen, Info } from 'lucide-react';
 
 const sections = [
   { id: 'hero', name: 'Hero', index: 0 },
@@ -67,7 +69,7 @@ const voiceEntries = [
     speaker: 'Teesta Setalvad',
     role: 'Secretary, CJP',
     type: 'speech' as const,
-    duration: '12:34',
+    audio: '/audio/teesta.wav',
     transcript: 'We stand here at Jantar Mantar not just as protesters, but as witnesses. The instruments behind us measure time with precision. We demand that same precision in justice. Every day without an FIR is a day the Constitution bleeds.',
   },
   {
@@ -75,7 +77,7 @@ const voiceEntries = [
     speaker: 'Harsh Mander',
     role: 'Human Rights Activist',
     type: 'speech' as const,
-    duration: '8:52',
+    audio: '/audio/harsh.wav',
     transcript: 'This observatory was built to track celestial bodies. Today it tracks the moral cosmos of our republic. When the state turns against its citizens, every institution must become a site of resistance. Jantar Mantar now measures the distance between promise and performance.',
   },
   {
@@ -83,7 +85,7 @@ const voiceEntries = [
     speaker: 'Anonymous Survivor',
     role: 'Victim of Violence',
     type: 'testimony' as const,
-    duration: '5:17',
+    audio: '/audio/survivor.wav',
     transcript: 'They came at night. We were sleeping. The sound of boots, the shouting, the tearing of tents. I saw them drag away my brother. We are not criminals. We are citizens asking for justice. Is that too much to ask?',
   },
   {
@@ -91,7 +93,7 @@ const voiceEntries = [
     speaker: 'Advocate Vrinda Grover',
     role: 'Legal Counsel',
     type: 'speech' as const,
-    duration: '10:03',
+    audio: '/audio/lawyer.wav',
     transcript: 'The law is clear. Section 154 CrPC mandates FIR registration. The Supreme Court in Lalita Kumari vs State of UP made it binding. Police refusal is not discretion — it is contempt. We will pursue every legal remedy.',
   },
   {
@@ -99,7 +101,7 @@ const voiceEntries = [
     speaker: 'Protesters',
     role: 'Collective Voice',
     type: 'chant' as const,
-    duration: '2:45',
+    audio: '/audio/chant.wav',
     transcript: 'Nyay do, nyay do / Inquilab zindabad / Samvidhan bachao / Desh bachao / Hum kya chahte? Nyay! / Kab chahte? Abhi!',
   },
 ];
@@ -194,11 +196,11 @@ const creditsCategories = [
 
 export default function ClientPage() {
   const { reducedMotion } = usePreferences();
+  const { playing: ambientPlaying, toggle: toggleAmbient, unavailable: ambientUnavailable } =
+    useAmbientAudio();
   const [activeSection, setActiveSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [audioPlaying, setAudioPlaying] = useState(false);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   // Every hook runs unconditionally, in a stable order. The previous version
   // returned early before these hooks while `mounted` was false, which threw
@@ -217,32 +219,9 @@ export default function ClientPage() {
     sectionRefs.current[index]?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
   };
 
-  const toggleAudio = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (audioPlaying) {
-      audio.pause();
-      setAudioPlaying(false);
-      return;
-    }
-
-    audio
-      .play()
-      .then(() => setAudioPlaying(true))
-      .catch(() => setAudioPlaying(false));
-  };
-
   return (
     <ErrorBoundary>
       <>
-        <audio
-          ref={audioRef}
-          src="/audio/ambient.mp3"
-          loop
-          preload="none"
-          className="hidden"
-        />
         <Header />
 
         <Scene scrollProgress={scrollProgress} activeSection={activeSection} />
@@ -311,9 +290,21 @@ export default function ClientPage() {
                     <span>Begin Documentary</span>
                     <ArrowDown className="w-5 h-5" aria-hidden="true" />
                   </Button>
-                  <Button variant="ghost" size="lg" onClick={toggleAudio} aria-label={audioPlaying ? 'Pause ambient audio' : 'Play ambient audio'}>
-                    {audioPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-                    <span>{audioPlaying ? 'Pause Audio' : 'Play Audio'}</span>
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    onClick={() => void toggleAmbient()}
+                    disabled={ambientUnavailable}
+                    aria-label={ambientPlaying ? 'Pause ambient sound' : 'Play ambient sound'}
+                  >
+                    {ambientPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+                    <span>
+                      {ambientUnavailable
+                        ? 'Audio Unavailable'
+                        : ambientPlaying
+                          ? 'Pause Ambience'
+                          : 'Play Ambience'}
+                    </span>
                   </Button>
                 </motion.div>
               </motion.div>
@@ -486,9 +477,19 @@ export default function ClientPage() {
                   Testimonies. Speeches. Silence.
                 </h2>
                 <p className="text-muted-foreground">
-                  Listen to those who were there. Each voice carries weight. Transcripts provided.
+                  The written record, read aloud. Every clip is a synthesized narration — not an
+                  original recording — and a full transcript sits beneath each voice.
                 </p>
               </motion.div>
+
+              <div className="mb-8 flex max-w-3xl items-start gap-3 rounded-lg border border-accent-gold/25 bg-accent-gold/5 p-4">
+                <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent-gold" aria-hidden="true" />
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  <span className="font-medium text-foreground">Audio note:</span> These voices are
+                  text-to-speech readings of the written testimony, not recordings of the actual
+                  event. They are labelled so they cannot be mistaken for archival audio.
+                </p>
+              </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {voiceEntries.map((voice, i) => (
@@ -513,30 +514,12 @@ export default function ClientPage() {
                       </div>
                       <div>
                         <h3 className="font-medium">{voice.speaker}</h3>
-                        <p className="text-caption text-muted-foreground">{voice.role} • {voice.duration}</p>
+                        <p className="text-caption text-muted-foreground">{voice.role} • Synthesized narration</p>
                       </div>
                     </div>
 
                     <div className="space-y-3">
-                      <div className="flex items-center gap-3">
-                        <button
-                          className="btn-ghost p-2 rounded-full w-10 h-10"
-                          onClick={() => {}}
-                          aria-label="Play audio"
-                        >
-                          <Play className="w-5 h-5" />
-                        </button>
-                        <div className="flex-1 h-2 bg-border rounded-full overflow-hidden">
-                          <motion.div
-                            className="h-full bg-accent-gold"
-                            initial={{ scaleX: 0 }}
-                            animate={{ scaleX: 0.3 }}
-                            transition={{ duration: 1 }}
-                            style={{ transformOrigin: 'left' }}
-                          />
-                        </div>
-                        <span className="text-xs text-muted-foreground font-mono">0:00 / {voice.duration}</span>
-                      </div>
+                      <VoicePlayer id={voice.id} src={voice.audio} label={voice.speaker} />
 
                       <details className="group">
                         <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">

@@ -168,6 +168,39 @@
   .card-interactive {
     @apply card cursor-pointer hover:-translate-y-1;
   }
+
+  .audio-range {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 9999px;
+    outline: none;
+  }
+
+  .audio-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: hsl(var(--accent-gold));
+    border: 0;
+    cursor: pointer;
+  }
+
+  .audio-range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: hsl(var(--accent-gold));
+    border: 0;
+    cursor: pointer;
+  }
+
+  .audio-range:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 @layer utilities {
