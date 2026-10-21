@@ -32,7 +32,7 @@ An immersive, interactive documentary website documenting the Cockroach Janta Pa
 ### **Information Architecture**
 
 #### **Pages / Sections**
-1. **Landing / Hero** — Atmospheric entry, Jantar Mantar silhouette in 3D, ambient sound
+1. **Landing / Hero** - Atmospheric entry, Jantar Mantar silhouette in 3D, generative ambient sound armed on the first user gesture
 2. **Context** — A courtroom remark, the NEET/CBSE/SSC exam crisis, and why Jantar Mantar
 3. **Timeline** — Reported events from May to July 2026, disputed figures attributed
 4. **Voices** — Real audio excerpts with source credit, timestamp and bilingual transcript
@@ -130,6 +130,7 @@ Light Mode:
 - Every audio clip is a short excerpt of a public recording, credited with source, date and timestamp, and linked to its full recording.
 - Photographs are published press images, not reconstructions. Each frame carries the publisher's caption, date, place and credit, and links to the original article. No generative imagery is used.
 - Full videos stay on their original platforms; the site links to them at the excerpt timestamp and does not re-upload them.
+- The ambient bed is generated in-browser and starts only on the first user gesture, never before it. An explicit mute is stored locally, and the bed pauses when a real recording plays.
 - Disputed figures (for example, injury counts on 20 July 2026) are attributed to the side that gave them.
 - Rights remain with the original creators and publishers; takedown requests are honoured via the GitHub repository issues page.
 - The 3D scene is labelled as an interpretive, non-survey visualisation.

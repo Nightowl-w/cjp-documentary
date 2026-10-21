@@ -14,7 +14,7 @@ An independent, unofficial interactive documentary on the 2026 Cockroach Janta P
 - **Reported timeline** — May to July 2026, with disputed figures attributed to their source.
 - **Outcome section** — the resignation and the written assurances that ended the fast, plus what still needs watching.
 - **Sources page content** — direct links to The Indian Express, AP News, The Hindu, BBC News India and official CJP channels.
-- **Accessibility** — reduced-motion support, keyboard-navigable audio players, opt-in audio, no autoplay.
+- **Accessibility** — reduced-motion support, keyboard-navigable audio players, ambience armed by default but started only on the first user gesture, with a persistent mute. No audio plays before interaction.
 
 ## Tech stack
 
@@ -39,6 +39,10 @@ python scripts/prepare-audio.py
 ```
 
 `scripts/prepare-audio.py` documents each clip's source, start/end time and credit line. Downloads are audio-only; full videos stay on their original platforms.
+
+## Ambient sound
+
+The hero ambience is a generative Web Audio drone, not a recording. It is armed by default and starts on the first click, tap or Enter/Space — browsers block audible sound before any gesture, so this is the earliest permitted start. The **Ambience On/Off** control mutes it and the choice is stored locally. Starting a voice excerpt or a full recording pauses the ambience so the real recording is heard without a bed underneath.
 
 ## Photographs
 
@@ -105,7 +109,7 @@ cjp-documentary/
 1. **Accuracy first** — dates and figures follow reporting, and disputed claims are attributed.
 2. **No fake voices** — only real recordings, with source and timestamp on every clip.
 3. **Respect** — the documentary centres students and families, and avoids spectacle.
-4. **Accessibility as baseline** — reduced motion, keyboard support, opt-in audio.
+4. **Accessibility as baseline** — reduced motion, keyboard support, and audio that waits for a user gesture and can be muted persistently.
 5. **Performance** — fast on mobile and low bandwidth.
 
 ## Content warning

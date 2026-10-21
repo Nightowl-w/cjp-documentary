@@ -114,6 +114,11 @@ export function PhotoEssay() {
 
   const closePhoto = useCallback(() => setActivePhoto(null), []);
   const closeVideo = useCallback(() => setActiveVideo(null), []);
+  const openVideo = useCallback((index: number) => {
+    // A full recording takes priority over the ambient bed.
+    window.dispatchEvent(new Event('cjp:voice-start'));
+    setActiveVideo(index);
+  }, []);
   const nextPhoto = useCallback(
     () => setActivePhoto((current) => (current === null ? current : (current + 1) % photos.length)),
     []
@@ -500,7 +505,8 @@ export function PhotoEssay() {
               <button
                 key={video.id}
                 type="button"
-                onClick={() => setActiveVideo(index)}
+                onClick={() => openVideo(index)}
+                data-ambient-ignore="true"
                 className="group flex min-h-[210px] flex-col justify-between border border-border/60 bg-card/50 p-5 text-left transition-all duration-500 hover:border-accent-gold/50 hover:bg-card"
                 aria-label={`Play video: ${video.title} — ${video.source}`}
               >

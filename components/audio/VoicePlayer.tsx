@@ -34,7 +34,10 @@ export function VoicePlayer({ id, src, label }: VoicePlayerProps) {
       if (Number.isFinite(audio.duration)) setDuration(audio.duration);
     };
     const onTime = () => setCurrent(audio.currentTime);
-    const onPlay = () => setPlaying(true);
+    const onPlay = () => {
+      setPlaying(true);
+      window.dispatchEvent(new Event('cjp:voice-start'));
+    };
     const onPause = () => setPlaying(false);
     const onEnded = () => {
       setPlaying(false);
@@ -104,6 +107,7 @@ export function VoicePlayer({ id, src, label }: VoicePlayerProps) {
           onClick={toggle}
           disabled={failed}
           data-testid={`voice-play-${id}`}
+          data-ambient-ignore="true"
           aria-label={playing ? `Pause ${label}` : `Play ${label}`}
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-accent-gold/30 bg-accent-gold/10 text-accent-gold transition-colors hover:bg-accent-gold/20 focus-visible:ring-2 focus-visible:ring-accent-gold disabled:opacity-40"
         >

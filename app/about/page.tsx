@@ -34,7 +34,7 @@ const sections = [
     id: 'privacy',
     title: 'Privacy',
     body: [
-      'This site does not require an account and does not run advertising or third-party analytics. Theme and reduced-motion preferences are stored locally in your browser. Audio is opt-in and is never autoplayed.',
+      'This site does not require an account and does not run advertising or third-party analytics. Theme, reduced-motion and ambience preferences are stored locally in your browser. No audio plays before you interact with the page: the ambience is armed by default and begins on your first click or tap. Use the Ambience On/Off button to mute it, and that choice is remembered.',
       'If you open an issue or contact the project, your message is used only to respond or to verify a correction. Identifying information is not published without explicit consent.',
     ],
   },

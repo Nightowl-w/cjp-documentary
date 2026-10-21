@@ -463,8 +463,12 @@ const creditsCategories = [
 
 export default function ClientPage() {
   const { reducedMotion } = usePreferences();
-  const { playing: ambientPlaying, toggle: toggleAmbient, unavailable: ambientUnavailable } =
-    useAmbientAudio();
+  const {
+    playing: ambientPlaying,
+    armed: ambientArmed,
+    toggle: toggleAmbient,
+    unavailable: ambientUnavailable,
+  } = useAmbientAudio();
   const [activeSection, setActiveSection] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -644,17 +648,39 @@ export default function ClientPage() {
                   <Button
                     variant="ghost"
                     size="lg"
+                    className="min-w-[13.5rem]"
                     onClick={() => void toggleAmbient()}
                     disabled={ambientUnavailable}
-                    aria-label={ambientPlaying ? 'Pause ambient sound' : 'Play ambient sound'}
+                    data-ambient-ignore="true"
+                    data-ambient-state={
+                      ambientUnavailable
+                        ? 'unavailable'
+                        : ambientPlaying
+                          ? 'playing'
+                          : ambientArmed
+                            ? 'armed'
+                            : 'off'
+                    }
+                    aria-pressed={ambientPlaying || ambientArmed}
+                    aria-label={
+                      ambientPlaying || ambientArmed
+                        ? 'Turn ambient sound off'
+                        : 'Turn ambient sound on'
+                    }
                   >
-                    {ambientPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+                    {ambientPlaying || ambientArmed ? (
+                      <Volume2 className="w-5 h-5" />
+                    ) : (
+                      <VolumeX className="w-5 h-5" />
+                    )}
                     <span>
                       {ambientUnavailable
                         ? 'Audio Unavailable'
                         : ambientPlaying
                           ? 'Pause Ambience'
-                          : 'Play Ambience'}
+                          : ambientArmed
+                            ? 'Ambience On'
+                            : 'Ambience Off'}
                     </span>
                   </Button>
                 </motion.div>

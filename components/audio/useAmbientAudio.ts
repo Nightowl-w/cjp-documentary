@@ -2,10 +2,24 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+const AMBIENCE_PREFERENCE = 'cjp-ambience';
+
+function persistPreference(value: 'on' | 'off') {
+  try {
+    window.localStorage.setItem(AMBIENCE_PREFERENCE, value);
+  } catch {
+    // Private mode or blocked storage: keep the in-memory state only.
+  }
+}
+
 /**
  * Generative ambient bed for the hero. There is no audio file: a quiet drone is
- * synthesised with the Web Audio API after the user presses play, so it never
- * autoplays and never 404s.
+ * synthesised with the Web Audio API.
+ *
+ * Browsers do not allow audible autoplay before a gesture. The bed is therefore
+ * armed by default and starts on the first meaningful click, tap or keyboard
+ * activation, instead of making the listener press the Ambience button first.
+ * An explicit mute is remembered in localStorage.
  */
 export function useAmbientAudio() {
   const contextRef = useRef<AudioContext | null>(null);
@@ -13,8 +27,17 @@ export function useAmbientAudio() {
   const oscillatorsRef = useRef<OscillatorNode[]>([]);
   const sourcesRef = useRef<AudioBufferSourceNode[]>([]);
   const playingRef = useRef(false);
+  const armedRef = useRef(true);
+  const preferenceReadyRef = useRef(false);
+  const mountedRef = useRef(true);
   const [playing, setPlaying] = useState(false);
+  const [armed, setArmed] = useState(true);
   const [unavailable, setUnavailable] = useState(false);
+
+  const setArmedState = useCallback((next: boolean) => {
+    armedRef.current = next;
+    setArmed(next);
+  }, []);
 
   const buildGraph = useCallback(() => {
     if (contextRef.current) return contextRef.current;
@@ -85,10 +108,18 @@ export function useAmbientAudio() {
     return context;
   }, []);
 
-  const toggle = useCallback(async () => {
+  const start = useCallback(async () => {
     try {
       const context = buildGraph();
+
+      // Update the UI immediately so a mute during resume() is not overwritten
+      // when the resume promise resolves.
+      playingRef.current = true;
+      setPlaying(true);
+      setArmedState(true);
+
       if (context.state === 'suspended') await context.resume();
+      if (!mountedRef.current || !playingRef.current) return;
 
       const master = masterRef.current;
       if (!master) return;
@@ -96,24 +127,111 @@ export function useAmbientAudio() {
       const now = context.currentTime;
       master.gain.cancelScheduledValues(now);
       master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), now);
-
-      if (playingRef.current) {
-        master.gain.linearRampToValueAtTime(0.0001, now + 0.6);
-        playingRef.current = false;
-        setPlaying(false);
-      } else {
-        master.gain.linearRampToValueAtTime(0.16, now + 1.2);
-        playingRef.current = true;
-        setPlaying(true);
-      }
+      master.gain.linearRampToValueAtTime(0.16, now + 1.2);
+      persistPreference('on');
     } catch (error) {
+      if (!mountedRef.current) return;
       console.error('[ambient] could not start audio', error);
       setUnavailable(true);
+      setArmedState(false);
+      playingRef.current = false;
+      setPlaying(false);
     }
-  }, [buildGraph]);
+  }, [buildGraph, setArmedState]);
+
+  const pause = useCallback(
+    (persist: boolean) => {
+      if (persist) persistPreference('off');
+      setArmedState(false);
+      playingRef.current = false;
+      setPlaying(false);
+
+      const context = contextRef.current;
+      const master = masterRef.current;
+      if (!context || !master) return;
+
+      const now = context.currentTime;
+      master.gain.cancelScheduledValues(now);
+      master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), now);
+      master.gain.linearRampToValueAtTime(0.0001, now + 0.6);
+    },
+    [setArmedState]
+  );
+
+  const toggle = useCallback(() => {
+    if (playingRef.current || armedRef.current) {
+      pause(true);
+    } else {
+      void start();
+    }
+  }, [pause, start]);
+
+  // Read the saved mute preference after hydration. If it is absent, the bed
+  // stays armed by default.
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(AMBIENCE_PREFERENCE) === 'off') {
+        setArmedState(false);
+      }
+    } catch {
+      // localStorage unavailable: keep the default (armed).
+    }
+    preferenceReadyRef.current = true;
+  }, [setArmedState]);
+
+  // Start the bed on the first meaningful gesture. The browser autoplay policy
+  // needs a gesture; this is that gesture, not a pre-page-load autoplay.
+  useEffect(() => {
+    if (!armed || playing) return;
+
+    let triggered = false;
+
+    const startOnFirstGesture = (event: Event) => {
+      if (triggered || !preferenceReadyRef.current) return;
+
+      if (event.type === 'keydown') {
+        const key = (event as KeyboardEvent).key;
+        if (key !== 'Enter' && key !== ' ') return;
+
+        const keyTarget = event.target;
+        if (
+          !(keyTarget instanceof Element) ||
+          !keyTarget.closest('button, a, [role="button"]')
+        ) {
+          return;
+        }
+      }
+
+      if (event instanceof PointerEvent && event.button !== 0) return;
+
+      const target = event.target;
+      if (target instanceof Element && target.closest('[data-ambient-ignore]')) return;
+
+      triggered = true;
+      void start();
+    };
+
+    document.addEventListener('pointerdown', startOnFirstGesture, true);
+    document.addEventListener('keydown', startOnFirstGesture, true);
+
+    return () => {
+      document.removeEventListener('pointerdown', startOnFirstGesture, true);
+      document.removeEventListener('keydown', startOnFirstGesture, true);
+    };
+  }, [armed, playing, start]);
+
+  // A real recording takes priority over the ambient bed. Do not remember this
+  // pause as an explicit mute: the next manual start still works.
+  useEffect(() => {
+    const onVoiceStart = () => pause(false);
+    window.addEventListener('cjp:voice-start', onVoiceStart);
+    return () => window.removeEventListener('cjp:voice-start', onVoiceStart);
+  }, [pause]);
 
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
+      mountedRef.current = false;
       playingRef.current = false;
       sourcesRef.current.forEach((source) => {
         try {
@@ -133,5 +251,5 @@ export function useAmbientAudio() {
     };
   }, []);
 
-  return { playing, toggle, unavailable };
+  return { playing, armed, toggle, unavailable };
 }
