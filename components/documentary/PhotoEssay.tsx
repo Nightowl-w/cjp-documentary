@@ -115,7 +115,7 @@ export function PhotoEssay() {
   const closePhoto = useCallback(() => setActivePhoto(null), []);
   const closeVideo = useCallback(() => setActiveVideo(null), []);
   const openVideo = useCallback((index: number) => {
-    // A full recording takes priority over the ambient bed.
+    // A full recording takes priority over the background loop.
     window.dispatchEvent(new Event('cjp:voice-start'));
     setActiveVideo(index);
   }, []);

@@ -27,14 +27,14 @@ const sections = [
     body: [
       'Audio excerpts on this site are short extracts of publicly available recordings, used for documentary commentary, criticism and education. Rights remain with the original creators: the Cockroach Janta Party, Sonam Wangchuk, NDTV, The Indian Express and The Hindu. Each excerpt links to its full source so listeners can watch the complete recording in context.',
       'Photographs are reproduced from the reporting of The Hindu, The Indian Express and Mint, with the publishers’ own captions and credit. They are used for documentary commentary and education; rights remain with the photographers and publishers. No generative imagery is used. If you are a rights holder and want a photograph or excerpt removed, open an issue on the GitHub repository and it will be taken down promptly.',
-      'No synthetic narration or voice cloning is used anywhere in the documentary.',
+      'The documentary voice excerpts are real recordings, not synthetic narration. The optional background loop is a separate, user-supplied track; it is off by default and is not part of the reported record.',
     ],
   },
   {
     id: 'privacy',
     title: 'Privacy',
     body: [
-      'This site does not require an account and does not run advertising or third-party analytics. Theme, reduced-motion and ambience preferences are stored locally in your browser. No audio plays before you interact with the page: the ambience is armed by default and begins on your first click or tap. Use the Ambience On/Off button to mute it, and that choice is remembered.',
+      'This site does not require an account and does not run advertising or third-party analytics. Theme and reduced-motion preferences are stored locally in your browser. No audio plays on page load or on an incidental click. The optional background loop is off by default and starts only when you press the Ambience button; press Pause Ambience to stop it. Starting a voice excerpt or a full recording pauses it.',
       'If you open an issue or contact the project, your message is used only to respond or to verify a correction. Identifying information is not published without explicit consent.',
     ],
   },

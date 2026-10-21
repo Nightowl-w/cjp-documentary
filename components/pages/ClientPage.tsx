@@ -367,7 +367,6 @@ export default function ClientPage() {
   const { reducedMotion } = usePreferences();
   const {
     playing: ambientPlaying,
-    armed: ambientArmed,
     toggle: toggleAmbient,
     unavailable: ambientUnavailable,
   } = useAmbientAudio();
@@ -555,22 +554,14 @@ export default function ClientPage() {
                     disabled={ambientUnavailable}
                     data-ambient-ignore="true"
                     data-ambient-state={
-                      ambientUnavailable
-                        ? 'unavailable'
-                        : ambientPlaying
-                          ? 'playing'
-                          : ambientArmed
-                            ? 'armed'
-                            : 'off'
+                      ambientUnavailable ? 'unavailable' : ambientPlaying ? 'playing' : 'off'
                     }
-                    aria-pressed={ambientPlaying || ambientArmed}
+                    aria-pressed={ambientPlaying}
                     aria-label={
-                      ambientPlaying || ambientArmed
-                        ? 'Turn ambient sound off'
-                        : 'Turn ambient sound on'
+                      ambientPlaying ? 'Turn ambient sound off' : 'Turn ambient sound on'
                     }
                   >
-                    {ambientPlaying || ambientArmed ? (
+                    {ambientPlaying ? (
                       <Volume2 className="w-5 h-5" />
                     ) : (
                       <VolumeX className="w-5 h-5" />
@@ -580,9 +571,7 @@ export default function ClientPage() {
                         ? 'Audio Unavailable'
                         : ambientPlaying
                           ? 'Pause Ambience'
-                          : ambientArmed
-                            ? 'Ambience On'
-                            : 'Ambience Off'}
+                          : 'Ambience Off'}
                     </span>
                   </Button>
                 </motion.div>

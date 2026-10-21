@@ -10,11 +10,11 @@ An independent, unofficial interactive documentary on the 2026 Cockroach Janta P
 - **Interactive 3D map** — an explorable map of the observatory, the protest camp and the route toward Parliament, with an eight-stop guided tour, golden-hour/day/night lighting, a march-route overlay and fullscreen mode. Drag to orbit, click labels for details, or press *Play the tour* to present it.
 - **Photo essay** — eleven attributed photographs from the camp in June and the crackdown on 20 July, reproduced from The Hindu, The Indian Express and Mint with their original captions. Includes a full-screen frame viewer, keyboard navigation and a contact sheet.
 - **Full recordings** — click-to-play cards that open the original NDTV, The Hindu, The Indian Express and Sonam Wangchuk videos on YouTube at the excerpt timestamps. Nothing is re-uploaded.
-- **Real audio excerpts** — recorded voices from the protest (Abhijeet Dipke, Sonam Wangchuk, students, a parent, a CJP organiser and a crowd chant), each credited with its source and timestamp. No text-to-speech, no voice cloning.
+- **Real audio excerpts** — recorded voices from the protest (Abhijeet Dipke, Sonam Wangchuk, students, a parent, a CJP organiser and a crowd chant), each credited with its source and timestamp. The documentary voice clips themselves are not synthetic; the optional background loop is a separate, user-supplied track.
 - **Animated timeline** — eleven reported moments on a one-screen, keyboard-accessible graph with a play-through. Click a date instead of scrolling a long vertical list; disputed figures stay attributed to their source.
 - **Outcome section** — the resignation and the written assurances that ended the fast, plus what still needs watching.
 - **Sources page content** — direct links to The Indian Express, AP News, The Hindu, BBC News India and official CJP channels.
-- **Accessibility** — reduced-motion support, keyboard-navigable audio players, ambience armed by default but started only on the first user gesture, with a persistent mute. No audio plays before interaction.
+- **Accessibility** — reduced-motion support, keyboard-navigable audio players, and an optional background loop that is off by default. It starts only from the Ambience button, never on page load or an incidental click.
 
 ## Tech stack
 
@@ -40,9 +40,9 @@ python scripts/prepare-audio.py
 
 `scripts/prepare-audio.py` documents each clip's source, start/end time and credit line. Downloads are audio-only; full videos stay on their original platforms.
 
-## Ambient sound
+## Background audio
 
-The hero ambience is a generative Web Audio drone, not a recording. It is armed by default and starts on the first click, tap or Enter/Space — browsers block audible sound before any gesture, so this is the earliest permitted start. The **Ambience On/Off** control mutes it and the choice is stored locally. Starting a voice excerpt or a full recording pauses the ambience so the real recording is heard without a bed underneath.
+The optional background loop is a user-supplied track, kept separate from the documentary's real voice excerpts. It is **off by default** and never starts on page load or on an incidental click. Use the **Ambience** button to start it and **Pause Ambience** to stop it. The loop plays quietly at low volume. Starting a voice excerpt or a full recording pauses it so the real recording is heard without a bed underneath; it does not resume automatically.
 
 ## Photographs
 
@@ -94,12 +94,12 @@ cjp-documentary/
 │   ├── three/map/orbit.ts          # Orbit camera + fly-to controller
 │   ├── three/map/tourData.ts       # Hotspots and tour narration
 │   ├── audio/VoicePlayer.tsx       # Play, pause, seek, duration
-│   ├── audio/useAmbientAudio.ts    # Generative Web Audio ambience
+│   ├── audio/useAmbientAudio.ts    # Optional background loop, muted by default
 │   ├── layout/Header.tsx
 │   ├── layout/Footer.tsx
 │   └── ui/                         # Button, ErrorBoundary
 ├── lib/utils.ts
-├── public/audio/           # Six credited audio excerpts
+├── public/audio/           # Six credited excerpts + optional background loop
 ├── public/photos/          # Eleven credited photo-essay frames
 ├── scripts/prepare-audio.py
 ├── PRD.md
