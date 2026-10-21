@@ -5,6 +5,7 @@ import { motion, useScroll } from 'framer-motion';
 import { Scene } from '@/components/three/Scene';
 import { JantarMantarMap } from '@/components/three/JantarMantarMap';
 import { PhotoEssay } from '@/components/documentary/PhotoEssay';
+import { AnimatedTimeline } from '@/components/timeline/AnimatedTimeline';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/Button';
@@ -72,105 +73,6 @@ const contextCards = [
     icon: MapPin,
   },
 ];
-
-const timelineEvents = [
-  {
-    id: 'exam-cancelled',
-    date: 'May 2026',
-    title: 'NEET-UG is cancelled',
-    description:
-      'Days after the exam is held, it is cancelled amid reports of paper leaks and irregularities. A CBI probe begins, a re-test is announced, and the crisis spreads across CUET, CBSE and SSC-GD examinations.',
-    type: 'legal' as const,
-  },
-  {
-    id: 'remark',
-    date: 'May 15',
-    title: 'The “cockroaches” remark',
-    description:
-      'During a contempt hearing on online criticism of judges, Chief Justice Surya Kant says unemployed young Indians are like “cockroaches” who become activists and attack everyone. The clip goes viral.',
-    type: 'statement' as const,
-  },
-  {
-    id: 'founded',
-    date: 'May 16',
-    title: 'The Cockroach Janta Party is founded',
-    description:
-      'Abhijeet Dipke, a 30-year-old communications strategist then studying in Boston, posts a satirical response and launches CJP as a parody of the BJP. Over a lakh sign-ups follow within days; the party says it is the “Voice of the Lazy and Unemployed”.',
-    type: 'statement' as const,
-  },
-  {
-    id: 'first-protest',
-    date: 'Jun 6',
-    title: 'Dipke lands — and goes to Jantar Mantar',
-    description:
-      'Dipke returns to Delhi from Boston and tells supporters he is headed straight to the protest site. CJP seeks permission for a peaceful demonstration and the first Jantar Mantar gathering begins.',
-    type: 'protest' as const,
-  },
-  {
-    id: 'sit-in',
-    date: 'Jun 20',
-    title: 'The sit-in expands',
-    description:
-      'Hundreds bang steel plates and spoons — a satirical echo of the prime minister’s balcony call. The demand hardens: Education Minister Dharmendra Pradhan must resign over the paper leaks.',
-    type: 'protest' as const,
-  },
-  {
-    id: 'wangchuk',
-    date: 'Jun 28',
-    title: 'Wangchuk begins an indefinite fast',
-    description:
-      'Ramon Magsaysay awardee Sonam Wangchuk, who had called himself an “honorary cockroach”, begins a hunger strike at Jantar Mantar in support of the demand for Pradhan’s resignation.',
-    type: 'protest' as const,
-  },
-  {
-    id: 'charter',
-    date: 'Jul 15',
-    title: 'The five demands',
-    description:
-      'CJP releases its public charter: accountability for paper leaks, real exam reform, and justice for students. The document turns a viral protest into a set of concrete asks.',
-    type: 'statement' as const,
-  },
-  {
-    id: 'hospital',
-    date: 'Jul 18',
-    title: 'Wangchuk removed to hospital',
-    description:
-      'As his fast weakens, authorities move Wangchuk to hospital. CJP calls it a forced removal from the site. Dipke begins his own hunger strike and announces the Chalo Sansad march for 20 July.',
-    type: 'violence' as const,
-  },
-  {
-    id: 'march',
-    date: 'Jul 20',
-    title: 'Chalo Sansad — and a lathi charge',
-    description:
-      'Thousands try to march to Parliament on the opening day of the monsoon session. Police use barricades, batons and tear gas. Delhi Police counts around 180 injured, including personnel; protesters say a peaceful march was met with force. The grounds are cleared and rebuilt overnight.',
-    type: 'violence' as const,
-  },
-  {
-    id: 'fast-ends',
-    date: 'Jul 23',
-    title: 'Wangchuk ends his 26-day fast',
-    description:
-      'Union ministers JP Nadda and Jitendra Singh visit Wangchuk with written assurances: fast-track courts, a stricter law against paper leaks, no cases against peaceful protesters, and a parliamentary discussion. He ends the fast.',
-    type: 'legal' as const,
-  },
-  {
-    id: 'resignation',
-    date: 'Jul 25',
-    title: 'Pradhan resigns. The protest is called off.',
-    description:
-      'Education Minister Dharmendra Pradhan tenders his resignation. After talks with the government, CJP calls off the agitation “in good faith” — and posts: “Cockroaches won. Democracy won.”',
-    type: 'victory' as const,
-  },
-];
-
-const typeLabels: Record<string, string> = {
-  protest: 'PROTEST',
-  legal: 'LEGAL / PROCESS',
-  violence: 'CRACKDOWN',
-  statement: 'STATEMENT',
-  victory: 'OUTCOME',
-};
 
 const voiceEntries = [
   {
@@ -776,12 +678,12 @@ export default function ClientPage() {
           <section
             ref={(el) => { sectionRefs.current[2] = el; }}
             id="timeline"
-            className="section relative"
+            className="section relative bg-background/95"
             aria-labelledby="timeline-heading"
           >
             <div className="container-wide">
               <motion.div
-                className="max-w-3xl mb-12"
+                className="max-w-4xl mb-6 sm:mb-8"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-100px' }}
@@ -789,51 +691,15 @@ export default function ClientPage() {
               >
                 <span className="text-caption font-medium text-accent-gold">02 — TIMELINE</span>
                 <h2 id="timeline-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
-                  Seven Weeks That Shook the Capital
+                  Seven Weeks, in Motion
                 </h2>
                 <p className="text-muted-foreground">
-                  From a courtroom remark in May to a minister’s resignation in July. Dates follow
-                  contemporaneous reporting; disputed details are attributed to the source.
+                  From a courtroom remark in May to a minister’s resignation in July. Click a date
+                  or press play — eleven reported moments, one at a time.
                 </p>
               </motion.div>
 
-              <div className="space-y-6 overflow-hidden">
-                {timelineEvents.map((event, i) => (
-                  <motion.article
-                    key={event.id}
-                    className="card-interactive group relative overflow-hidden"
-                    initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ delay: i * 0.08, duration: 0.6 }}
-                  >
-                    <div className="flex flex-col md:flex-row md:items-center gap-6">
-                      <div className="flex-shrink-0 w-48 md:w-40 text-center relative">
-                        <span className="text-caption font-medium text-accent-gold/70">{event.date}</span>
-                        <div className="relative mt-2">
-                          <span className={cn(
-                            'inline-block px-3 py-1 rounded-full text-xs font-medium',
-                            event.type === 'protest' && 'bg-accent-gold/20 text-accent-gold',
-                            event.type === 'legal' && 'bg-accent-teal/20 text-accent-teal',
-                            event.type === 'violence' && 'bg-accent-crimson/20 text-accent-crimson',
-                            event.type === 'statement' && 'bg-border text-muted-foreground',
-                            event.type === 'victory' && 'bg-accent-gold/30 text-accent-gold'
-                          )}>
-                            {typeLabels[event.type]}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-medium mb-2 group-hover:text-accent-gold transition-colors">{event.title}</h3>
-                        <p className="text-muted-foreground text-body-sm leading-relaxed">{event.description}</p>
-                      </div>
-                      <div className="flex-shrink-0 w-12 flex items-center justify-center">
-                        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-accent-gold group-hover:translate-x-1 transition-all" />
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
+              <AnimatedTimeline />
             </div>
           </section>
 

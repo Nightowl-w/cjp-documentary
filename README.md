@@ -11,7 +11,7 @@ An independent, unofficial interactive documentary on the 2026 Cockroach Janta P
 - **Photo essay** — eleven attributed photographs from the camp in June and the crackdown on 20 July, reproduced from The Hindu, The Indian Express and Mint with their original captions. Includes a full-screen frame viewer, keyboard navigation and a contact sheet.
 - **Full recordings** — click-to-play cards that open the original NDTV, The Hindu, The Indian Express and Sonam Wangchuk videos on YouTube at the excerpt timestamps. Nothing is re-uploaded.
 - **Real audio excerpts** — recorded voices from the protest (Abhijeet Dipke, Sonam Wangchuk, students, a parent, a CJP organiser and a crowd chant), each credited with its source and timestamp. No text-to-speech, no voice cloning.
-- **Reported timeline** — May to July 2026, with disputed figures attributed to their source.
+- **Animated timeline** — eleven reported moments on a one-screen, keyboard-accessible graph with a play-through. Click a date instead of scrolling a long vertical list; disputed figures stay attributed to their source.
 - **Outcome section** — the resignation and the written assurances that ended the fast, plus what still needs watching.
 - **Sources page content** — direct links to The Indian Express, AP News, The Hindu, BBC News India and official CJP channels.
 - **Accessibility** — reduced-motion support, keyboard-navigable audio players, ambience armed by default but started only on the first user gesture, with a persistent mute. No audio plays before interaction.
@@ -83,9 +83,11 @@ cjp-documentary/
 │   ├── icon.svg            # Cockroach mark
 │   └── globals.css         # Design tokens
 ├── components/
-│   ├── pages/ClientPage.tsx        # Sections, timeline, voices data
+│   ├── pages/ClientPage.tsx        # Sections and voices data
 │   ├── documentary/PhotoEssay.tsx  # Photo essay, viewer, video cards
 │   ├── documentary/mediaData.ts    # Photo/video credits and captions
+│   ├── timeline/AnimatedTimeline.tsx # One-screen timeline graph + playback
+│   ├── timeline/timelineData.ts      # Timeline events, types and labels
 │   ├── three/Scene.tsx             # Vanilla Three.js background scene
 │   ├── three/JantarMantarMap.tsx   # Interactive map: UI, tour, labels
 │   ├── three/map/world.ts          # Map geometry, lighting, animation

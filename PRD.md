@@ -34,7 +34,7 @@ An immersive, interactive documentary website documenting the Cockroach Janta Pa
 #### **Pages / Sections**
 1. **Landing / Hero** - Atmospheric entry, Jantar Mantar silhouette in 3D, generative ambient sound armed on the first user gesture
 2. **Context** — A courtroom remark, the NEET/CBSE/SSC exam crisis, and why Jantar Mantar
-3. **Timeline** — Reported events from May to July 2026, disputed figures attributed
+3. **Timeline** — An interactive, one-screen graph of eleven reported events from May to July 2026, with a play-through, keyboard-accessible date selection and disputed figures attributed
 4. **Voices** — Real audio excerpts with source credit, timestamp and bilingual transcript
 5. **In Pictures** — Eleven credited press photographs of the camp and the 20 July crackdown, with a full-screen viewer, contact sheet and links to the original reporting; includes click-to-play cards for the full recordings
 6. **The Site** — Interactive 3D map of the observatory and protest camp, with an eight-stop guided tour, day/night lighting, a march-route overlay and fullscreen presentation mode
@@ -101,7 +101,7 @@ Light Mode:
 |--------|-----------|
 | Page load | 3D scene fades in → camera dolly → hero text reveals (staggered) |
 | Section enter | Content lifts + fades (0.6s spring), 3D elements rotate into view |
-| Timeline scrub | Camera moves along path, events scale/pulse at trigger points |
+| Timeline scrub | Scan line glides between moments; selected node pulses; the detail card crossfades |
 | Voice playback | Waveform draws in real-time, particle burst on key phrases |
 | Hover (interactive) | Magnetic pull, subtle scale, color shift — 150ms spring |
 | Transition | Page wipe via shader (custom WebGL), not DOM |
