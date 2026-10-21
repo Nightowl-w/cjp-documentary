@@ -4,9 +4,9 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: 'Methodology, Privacy & Credits — CJP Documentary',
+  title: 'Methodology, Audio & Credits — Cockroach Janta Party Documentary',
   description:
-    'How this interactive documentary was researched, built, and how we handle visitor privacy. Credits and contact information.',
+    'How this interactive documentary was researched, how the real audio excerpts were prepared, and how visitor privacy is handled.',
 };
 
 const sections = [
@@ -14,10 +14,18 @@ const sections = [
     id: 'methodology',
     title: 'Methodology',
     body: [
-      'This documentary is assembled from public reporting, statements released by Citizens for Justice and Peace, court filings, and interviews conducted with organisers, lawyers, and survivors. Testimonies are presented as recorded; where anonymity was requested, identifying details have been withheld.',
-      'The timeline reflects reported dates for the January 2024 demonstration and its aftermath. Disputed claims are attributed rather than presented as settled fact. The 3D reconstruction of Jantar Mantar is an interpretive visualisation, not a survey-grade model: proportions and placement are approximate and intended to convey scale and atmosphere.',
-      'The voice clips in this documentary are neural text-to-speech readings in Hindi of the written testimony. They are not archival recordings and are labelled as synthesized narration throughout the site.',
-      'Corrections and additional testimony are welcome. Documentation is treated as a living record, and this page will note substantive updates as they are verified.',
+      'This documentary is assembled from public reporting and public recordings: The Indian Express, AP News, The Hindu, BBC News India, and the official channels of the Cockroach Janta Party and Sonam Wangchuk. Dates follow contemporaneous reporting. Disputed figures are attributed to the side that gave them — for example, the injury count from the 20 July march is described as Delhi Police’s figure, while protesters’ accounts are reported separately.',
+      'The timeline covers May to July 2026, from the Supreme Court remark that gave the movement its name to Education Minister Dharmendra Pradhan’s resignation on 25 July. The 3D reconstruction of Jantar Mantar is an interpretive visualisation, not a survey-grade model: proportions and placement are approximate and intended to convey scale and atmosphere.',
+      'The voice clips are real excerpts from public recordings — not text-to-speech and not dramatic reconstructions. Every clip carries its source, date and timestamp in the Voices section. Transcripts follow the recording; where crowd audio is partially indistinct, the transcript is marked as approximate.',
+      'Corrections and additional context are welcome. Documentation is treated as a living record, and this page will note substantive updates as they are verified.',
+    ],
+  },
+  {
+    id: 'audio',
+    title: 'Audio & Fair Use',
+    body: [
+      'Audio excerpts on this site are short extracts of publicly available recordings, used for documentary commentary, criticism and education. Rights remain with the original creators: the Cockroach Janta Party, Sonam Wangchuk, NDTV, The Indian Express and The Hindu. Each excerpt links to its full source so listeners can watch the complete recording in context.',
+      'No synthetic narration or voice cloning is used anywhere in the documentary. If you are a rights holder and want an excerpt removed, open an issue on the GitHub repository and it will be taken down promptly.',
     ],
   },
   {
@@ -25,14 +33,15 @@ const sections = [
     title: 'Privacy',
     body: [
       'This site does not require an account and does not run advertising or third-party analytics. Theme and reduced-motion preferences are stored locally in your browser. Audio is opt-in and is never autoplayed.',
-      'If you contact the documentation team, your message is used only to respond to you or to verify a correction. We do not publish identifying information without explicit consent.',
+      'If you open an issue or contact the project, your message is used only to respond or to verify a correction. Identifying information is not published without explicit consent.',
     ],
   },
   {
     id: 'contact',
     title: 'Contact & Corrections',
     body: [
-      'For corrections, press enquiries, or offers of pro bono legal and translation support, write to docs@cjp-documentary.org. Survivors seeking support should reach out to CJP directly through cjp.org.in rather than through this archive.',
+      'This is an independent, unofficial documentary and is not affiliated with the Cockroach Janta Party or any political party. For corrections, source material or takedown requests, open an issue on the GitHub repository.',
+      'For the movement’s own statements, or to support its work, go directly to the Cockroach Janta Party’s official website.',
     ],
   },
 ];
@@ -57,8 +66,8 @@ export default function AboutPage() {
             </h1>
             <p className="max-w-2xl text-body-lg leading-relaxed text-muted-foreground">
               An interactive documentary is still a document. These notes describe how the material
-              was gathered, how the reconstruction was built, and how we handle the trust of the
-              people who shared their accounts.
+              was gathered, how the real recordings were prepared, and how visitor privacy is
+              handled.
             </p>
 
             <div className="mt-16 space-y-14">
@@ -77,11 +86,29 @@ export default function AboutPage() {
             <div className="mt-16 rounded-lg border border-border/60 bg-card/60 p-8">
               <h2 className="mb-3 font-display text-xl font-light">Credits</h2>
               <p className="text-sm leading-relaxed text-muted-foreground">
-                Research and writing by the CJP Documentation Team. 3D reconstruction, interaction
-                design, and development by the documentary engineering team. Built with Next.js,
-                Three.js, and Framer Motion. Deployed on Vercel. Open source on GitHub. Dedicated to
-                every voice that refused silence.
+                Research, writing, design and development by the documentary project. Built with
+                Next.js, Three.js, Framer Motion and Tailwind CSS. Deployed on Vercel. Open source
+                on GitHub — including the script that prepares the audio excerpts from their
+                original sources. Dedicated to the students who asked only for a fair exam.
               </p>
+              <div className="mt-6 flex flex-wrap gap-4 text-sm">
+                <a
+                  href="https://github.com/Nightowl-w/cjp-documentary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link"
+                >
+                  GitHub repository
+                </a>
+                <a
+                  href="https://www.cockroachjantaparty.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link"
+                >
+                  CJP official website
+                </a>
+              </div>
             </div>
           </div>
         </section>

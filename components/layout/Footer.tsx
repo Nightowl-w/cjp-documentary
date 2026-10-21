@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Code2, Share2, Globe, Scale, Heart, Users, BookOpen } from 'lucide-react';
+import { Code2, Globe, Scale, Heart, Users, BookOpen, Newspaper, Landmark } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -9,21 +9,40 @@ export function Footer() {
       <div className="container-wide py-16 lg:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-6" aria-label="CJP Documentary Home">
+            <Link href="/" className="flex items-center gap-2 mb-6" aria-label="Cockroach Janta Party documentary home">
               <span className="text-xl font-display font-light tracking-tight gradient-gold">CJP</span>
             </Link>
             <p className="text-muted-foreground text-body-sm leading-relaxed mb-6 max-w-xs">
-              An interactive documentary bearing witness to the Citizens for Justice and Peace protest at Jantar Mantar. Truth persists.
+              An independent, unofficial documentary on the Cockroach Janta Party protest at Jantar
+              Mantar, New Delhi — from the courtroom remark to a minister’s resignation.
             </p>
             <div className="flex gap-4">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent-gold transition-colors" aria-label="GitHub">
+              <a
+                href="https://github.com/Nightowl-w/cjp-documentary"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-accent-gold transition-colors"
+                aria-label="GitHub repository"
+              >
                 <Code2 className="w-5 h-5" />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent-gold transition-colors" aria-label="Twitter">
-                <Share2 className="w-5 h-5" />
-              </a>
-              <a href="https://cjp.org.in" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent-gold transition-colors" aria-label="CJP Official Website">
+              <a
+                href="https://www.cockroachjantaparty.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-accent-gold transition-colors"
+                aria-label="Cockroach Janta Party official website"
+              >
                 <Globe className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.instagram.com/cockroachjantaparty/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-accent-gold transition-colors"
+                aria-label="Cockroach Janta Party on Instagram"
+              >
+                <Heart className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -33,12 +52,12 @@ export function Footer() {
             <nav aria-label="Footer navigation">
               <ul className="space-y-3">
                 {[
-                  { href: '/#context', label: 'Historical Context', icon: BookOpen },
-                  { href: '/#timeline', label: 'Interactive Timeline', icon: Scale },
-                  { href: '/#voices', label: 'Voices & Testimonies', icon: Heart },
-                  { href: '/#ground', label: 'Ground View', icon: Users },
-                  { href: '/#solidarity', label: 'Solidarity Map', icon: Globe },
-                  { href: '/#action', label: 'Take Action', icon: Scale },
+                  { href: '/#context', label: 'Context', icon: BookOpen },
+                  { href: '/#timeline', label: 'Timeline', icon: Scale },
+                  { href: '/#voices', label: 'Voices & Recordings', icon: Users },
+                  { href: '/#site', label: 'The Site', icon: Landmark },
+                  { href: '/#outcome', label: 'What the Protest Won', icon: Heart },
+                  { href: '/#sources', label: 'Sources', icon: Newspaper },
                 ].map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent-gold transition-colors group">
@@ -52,25 +71,28 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display font-medium text-lg mb-4">Resources</h3>
+            <h3 className="font-display font-medium text-lg mb-4">External Sources</h3>
             <ul className="space-y-3">
               {[
-                { label: 'Legal Aid Contacts', href: '/#action' },
-                { label: 'Medical Support', href: '/#action' },
-                { label: 'Documentation Archive', href: '/#action' },
-                { label: 'Press Kit', href: '/#action' },
-                { label: 'Educational Materials', href: '/#action' },
-                { label: 'Donate to CJP', href: 'https://cjp.org.in/donate', external: true },
+                { label: 'CJP official website', href: 'https://www.cockroachjantaparty.org/' },
+                {
+                  label: 'Indian Express timeline',
+                  href: 'https://indianexpress.com/article/india/cjp-protest-timeline-five-key-moments-dharmendra-pradhan-resignation-10803274/',
+                },
+                { label: 'AP News report', href: 'https://apnews.com/article/india-cockroach-party-exam-leaks-protest-05fc69ad9aa4c59486acb734af5baa64' },
+                { label: 'The Hindu ground report', href: 'https://www.youtube.com/watch?v=qa20AKineKc' },
+                { label: 'Sonam Wangchuk (official)', href: 'https://www.youtube.com/watch?v=euPMOFtH_38' },
+                { label: 'Corrections on GitHub', href: 'https://github.com/Nightowl-w/cjp-documentary/issues' },
               ].map((item) => (
                 <li key={item.label}>
-                  <Link
+                  <a
                     href={item.href}
-                    target={item.external ? '_blank' : undefined}
-                    rel={item.external ? 'noopener noreferrer' : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-sm text-muted-foreground hover:text-accent-gold transition-colors"
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -79,13 +101,19 @@ export function Footer() {
           <div>
             <h3 className="font-display font-medium text-lg mb-4">About This Project</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
+              <li>Real audio excerpts, credited beneath every clip</li>
               <li>Built with Next.js 15, Three.js, Framer Motion</li>
               <li>Designed for accessibility (WCAG AA)</li>
-              <li>Optimized for performance & low bandwidth</li>
-              <li>Open source on GitHub</li>
-              <li>Deployed on Vercel</li>
+              <li>Optimised for performance & low bandwidth</li>
+              <li>Open source on GitHub · Deployed on Vercel</li>
               <li className="pt-4 border-t border-border/50">
-                <span className="font-medium text-foreground">Content Warning:</span> This documentary contains descriptions of police violence and communal harm. Viewer discretion advised.
+                <span className="font-medium text-foreground">Content warning:</span> contains
+                descriptions of police violence, exam paper leaks and student suicides. Viewer
+                discretion advised.
+              </li>
+              <li>
+                <span className="font-medium text-foreground">Disclaimer:</span> unofficial and not
+                affiliated with the Cockroach Janta Party or any political party.
               </li>
             </ul>
           </div>
@@ -93,7 +121,8 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} CJP Documentary Project. All rights reserved. Content used under fair use for documentation purposes.
+            © {currentYear} CJP Documentary Project (unofficial). Audio excerpts remain the property
+            of their creators and are used for commentary and education.
           </p>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <Link href="/about#privacy" className="hover:text-accent-gold transition-colors">Privacy</Link>

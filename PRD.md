@@ -1,10 +1,10 @@
-# CJP Protest at Jantar Mantar - Interactive Documentary
+# Cockroach Janta Party at Jantar Mantar - Interactive Documentary
 ## Product Requirements Document
 
 ---
 
 ### **Project Overview**
-An immersive, interactive documentary website documenting the Citizens for Justice and Peace (CJP) protest at Jantar Mantar, New Delhi. The experience should feel like a world-class digital exhibition — cinematic, respectful, and technically exceptional.
+An immersive, interactive documentary website documenting the Cockroach Janta Party (CJP) protest at Jantar Mantar, New Delhi (May–July 2026) — from the Supreme Court remark that gave the movement its name to the resignation of Education Minister Dharmendra Pradhan. The experience should feel like a world-class digital exhibition — cinematic, respectful, and technically exceptional, and it must use real, attributed recordings rather than synthesized narration.
 
 ---
 
@@ -20,7 +20,7 @@ An immersive, interactive documentary website documenting the Citizens for Justi
 | Layer | Technology | Reason |
 |-------|------------|--------|
 | Framework | Next.js 15 (App Router) + TypeScript | Modern React, excellent Vercel integration |
-| 3D | Three.js + React Three Fiber (R3F) + Drei | Declarative 3D, React ecosystem |
+| 3D | Three.js (vanilla, no React Three Fiber) | Direct control over the fixed background canvas, smaller bundle |
 | Animation | Framer Motion + GSAP ScrollTrigger | Complex choreography, scroll-driven narratives |
 | Styling | Tailwind CSS + CSS Variables | Design system, dark mode, performance |
 | Typography | Variable fonts (Inter, Space Grotesk) | Expressive, performant |
@@ -33,13 +33,13 @@ An immersive, interactive documentary website documenting the Citizens for Justi
 
 #### **Pages / Sections**
 1. **Landing / Hero** — Atmospheric entry, Jantar Mantar silhouette in 3D, ambient sound
-2. **Context** — Historical background, why CJP, why Jantar Mantar
-3. **Timeline** — Interactive 3D timeline of events (scroll-driven)
-4. **Voices** — Testimonials, speeches, interviews (audio + transcript)
-5. **Ground View** — Immersive 3D recreation of protest site
-6. **Solidarity** — Map of support, signatures, global resonance
-7. **Action / Resources** — Legal aid, donation, volunteer, share
-8. **Credits / About** — Team, sources, methodology
+2. **Context** — A courtroom remark, the NEET/CBSE/SSC exam crisis, and why Jantar Mantar
+3. **Timeline** — Reported events from May to July 2026, disputed figures attributed
+4. **Voices** — Real audio excerpts with source credit, timestamp and bilingual transcript
+5. **The Site** — Honest guide to the 3D scene and the protest grounds
+6. **Outcome** — The resignation, the written assurances, and what still needs watching
+7. **Sources** — Direct links to reporting and official channels, plus corrections
+8. **Credits / About** — Methodology, audio/fair use, privacy, credits
 
 ---
 
@@ -117,12 +117,18 @@ Light Mode:
 ### **Content Strategy**
 
 #### **Sources Required**
-- CJP official statements, press releases
-- News coverage (The Wire, Scroll, Article 14, etc.)
-- Protest photographs (with attribution/permission)
-- Video footage (protesters, speeches, police action)
-- Legal documents, FIRs, court orders
-- Testimonies (anonymized where needed)
+- Cockroach Janta Party official website, charter and channels
+- News coverage (The Indian Express, AP News, The Hindu, BBC News India)
+- Official recordings (CJP YouTube, Sonam Wangchuk's channel)
+- Short, credited audio excerpts for the Voices section
+- Publicly reported dates, figures and government assurances
+
+#### **Content Accuracy & Real Audio Policy**
+- No text-to-speech, voice cloning or dramatic reconstructions anywhere in the documentary.
+- Every audio clip is a short excerpt of a public recording, credited with source, date and timestamp, and linked to its full recording.
+- Disputed figures (for example, injury counts on 20 July 2026) are attributed to the side that gave them.
+- Rights remain with the original creators; takedown requests are honoured via the GitHub repository issues page.
+- The 3D scene is labelled as an interpretive, non-survey visualisation.
 
 #### **Tone Guidelines**
 - **Factual, not sensational**
@@ -162,7 +168,7 @@ cjp-documentary/
 │   ├── action/                 # Resources
 │   └── credits/                # About
 ├── components/
-│   ├── three/                  # R3F components
+│   ├── three/                  # Three.js (vanilla) scene components
 │   │   ├── Scene.tsx           # Main canvas wrapper
 │   │   ├── JantarMantar.tsx    # Monument group
 │   │   ├── Particles.tsx       # Particle systems

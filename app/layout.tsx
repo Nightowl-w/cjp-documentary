@@ -4,10 +4,20 @@ import './globals.css';
 import { PreferencesProvider } from '@/components/providers/PreferencesProvider';
 
 export const metadata: Metadata = {
-  title: 'CJP Protest at Jantar Mantar — An Interactive Documentary',
-  description: 'An immersive documentary exploring the Citizens for Justice and Peace protest at Jantar Mantar, New Delhi. Voices, timeline, and ground truth.',
-  keywords: ['CJP', 'Jantar Mantar', 'protest', 'documentary', 'human rights', 'justice', 'Delhi'],
-  authors: [{ name: 'Citizens for Justice and Peace Documentation Team' }],
+  title: 'Cockroach Janta Party at Jantar Mantar — An Interactive Documentary',
+  description:
+    'An immersive documentary on the 2026 CJP protest at Jantar Mantar, New Delhi — real recordings, a reported timeline, and the youth movement that forced an education minister’s resignation.',
+  keywords: [
+    'CJP',
+    'Cockroach Janta Party',
+    'Jantar Mantar',
+    'NEET paper leak',
+    'protest',
+    'documentary',
+    'exam reform',
+    'Delhi',
+  ],
+  authors: [{ name: 'CJP Documentary Project (unofficial)' }],
   creator: 'CJP Documentary Project',
   publisher: 'CJP Documentary Project',
   robots: 'index, follow',
@@ -16,9 +26,10 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: 'https://cjp-documentary.vercel.app',
-    siteName: 'CJP Protest at Jantar Mantar',
-    title: 'CJP Protest at Jantar Mantar — An Interactive Documentary',
-    description: 'An immersive documentary exploring the Citizens for Justice and Peace protest at Jantar Mantar, New Delhi.',
+    siteName: 'Cockroach Janta Party at Jantar Mantar',
+    title: 'Cockroach Janta Party at Jantar Mantar — An Interactive Documentary',
+    description:
+      'An immersive documentary on the 2026 CJP protest at Jantar Mantar, New Delhi — real recordings, a reported timeline, and the movement that forced an education minister’s resignation.',
     images: [
       {
         url: '/og-image.jpg',
@@ -30,14 +41,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CJP Protest at Jantar Mantar',
-    description: 'An immersive documentary exploring the Citizens for Justice and Peace protest at Jantar Mantar, New Delhi.',
+    title: 'Cockroach Janta Party at Jantar Mantar',
+    description:
+      'An immersive documentary on the 2026 CJP protest at Jantar Mantar, New Delhi — real recordings and a reported timeline.',
     images: ['/og-image.jpg'],
-  },
-  verification: {
-    other: {
-      'google-site-verification': 'your-verification-code',
-    },
   },
 };
 

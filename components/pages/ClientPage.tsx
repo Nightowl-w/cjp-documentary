@@ -11,201 +11,423 @@ import { VoicePlayer } from '@/components/audio/VoicePlayer';
 import { useAmbientAudio } from '@/components/audio/useAmbientAudio';
 import { usePreferences } from '@/components/providers/PreferencesProvider';
 import { cn } from '@/lib/utils';
-import { ArrowDown, Volume2, VolumeX, ChevronRight, Mic, Users, Heart, MapPin, Scale, BookOpen, Info } from 'lucide-react';
+import {
+  ArrowDown,
+  Volume2,
+  VolumeX,
+  ChevronRight,
+  Mic,
+  Users,
+  Heart,
+  MapPin,
+  Scale,
+  BookOpen,
+  Info,
+  Globe,
+  Newspaper,
+  Radio,
+  Code2,
+  Landmark,
+  Gavel,
+  ShieldCheck,
+  Eye,
+  ExternalLink,
+} from 'lucide-react';
 
 const sections = [
   { id: 'hero', name: 'Hero', index: 0 },
   { id: 'context', name: 'Context', index: 1 },
   { id: 'timeline', name: 'Timeline', index: 2 },
   { id: 'voices', name: 'Voices', index: 3 },
-  { id: 'ground', name: 'Ground View', index: 4 },
-  { id: 'solidarity', name: 'Solidarity', index: 5 },
-  { id: 'action', name: 'Action', index: 6 },
+  { id: 'site', name: 'The Site', index: 4 },
+  { id: 'outcome', name: 'Outcome', index: 5 },
+  { id: 'sources', name: 'Sources', index: 6 },
   { id: 'credits', name: 'Credits', index: 7 },
 ];
 
 const contextCards = [
   {
-    id: 'cjp',
-    title: 'Citizens for Justice & Peace',
-    content: 'Founded in 2002 after the Gujarat pogrom, CJP fights for accountability, rehabilitation, and constitutional justice. Led by Teesta Setalvad.',
+    id: 'word',
+    title: 'A word became a movement',
+    content:
+      'On 15 May 2026, during a Supreme Court hearing, Chief Justice Surya Kant compared unemployed young Indians to “cockroaches”. Within a day, a satirical post by Abhijeet Dipke asked what would happen if the cockroaches organised. The Cockroach Janta Party was born on 16 May — a parody party that became the loudest address for a generation’s anger.',
     icon: Scale,
   },
   {
-    id: 'jantar-mantar',
-    title: 'Jantar Mantar Observatory',
-    content: 'UNESCO World Heritage Site. 18th-century astronomical instruments of precision masonry. Chosen for its symbolism: observation, truth, time.',
+    id: 'exam',
+    title: 'The exam that broke trust',
+    content:
+      'NEET-UG 2026 was cancelled after reports of paper leaks and irregularities. By CJP’s account, the crisis touched more than a crore students across NEET, CUET, CBSE and SSC-GD examinations. Several aspirants reportedly died by suicide. The demand was simple: accountability at the top, starting with the Education Minister.',
     icon: BookOpen,
   },
   {
-    id: 'protest',
-    title: 'The January 2024 Protest',
-    content: 'Peaceful demonstration demanding FIR registration for communal violence, independent SIT inquiry, compensation for victims, and police accountability.',
-    icon: Users,
+    id: 'site',
+    title: 'Why Jantar Mantar',
+    content:
+      'Delhi’s designated protest ground sits between the 18th-century observatory and Parliament. From early June 2026, students, parents and exam aspirants made it the country’s most visible address for exam reform — a sit-in that held for seven weeks, through heat, rain and a lathi charge.',
+    icon: MapPin,
   },
 ];
 
 const timelineEvents = [
-  { id: 'start', date: 'Jan 15', title: 'CJP Announces Protest', description: 'Call for peaceful demonstration at Jantar Mantar demanding accountability.', type: 'statement' as const },
-  { id: 'gathering', date: 'Jan 22', title: 'Protesters Gather', description: 'Hundreds assemble. Speeches by activists, lawyers, survivors. Police present but restrained.', type: 'protest' as const },
-  { id: 'speeches', date: 'Jan 22', title: 'Key Speeches Delivered', description: 'Teesta Setalvad, Harsh Mander address crowd. Demands: FIR, SIT, compensation.', type: 'protest' as const },
-  { id: 'police-action', date: 'Jan 23', title: 'Police Crackdown', description: 'Late-night detentions, tents removed, sound systems seized. Habeas corpus filed.', type: 'violence' as const },
-  { id: 'court-hearing', date: 'Jan 25', title: 'Delhi HC Hearing', description: 'Court questions police action, demands status report. Interim relief for detainees.', type: 'legal' as const },
-  { id: 'solidarity', date: 'Jan 28', title: 'National Solidarity', description: 'Sympathy protests in 20+ cities. Students, civil society, opposition join demands.', type: 'solidarity' as const },
-  { id: 'ongoing', date: 'Feb 15', title: 'Struggle Continues', description: 'PIL for independent SIT filed. Protesters vow return. Documentation ongoing.', type: 'statement' as const },
+  {
+    id: 'exam-cancelled',
+    date: 'May 2026',
+    title: 'NEET-UG is cancelled',
+    description:
+      'Days after the exam is held, it is cancelled amid reports of paper leaks and irregularities. A CBI probe begins, a re-test is announced, and the crisis spreads across CUET, CBSE and SSC-GD examinations.',
+    type: 'legal' as const,
+  },
+  {
+    id: 'remark',
+    date: 'May 15',
+    title: 'The “cockroaches” remark',
+    description:
+      'During a contempt hearing on online criticism of judges, Chief Justice Surya Kant says unemployed young Indians are like “cockroaches” who become activists and attack everyone. The clip goes viral.',
+    type: 'statement' as const,
+  },
+  {
+    id: 'founded',
+    date: 'May 16',
+    title: 'The Cockroach Janta Party is founded',
+    description:
+      'Abhijeet Dipke, a 30-year-old communications strategist then studying in Boston, posts a satirical response and launches CJP as a parody of the BJP. Over a lakh sign-ups follow within days; the party says it is the “Voice of the Lazy and Unemployed”.',
+    type: 'statement' as const,
+  },
+  {
+    id: 'first-protest',
+    date: 'Jun 6',
+    title: 'Dipke lands — and goes to Jantar Mantar',
+    description:
+      'Dipke returns to Delhi from Boston and tells supporters he is headed straight to the protest site. CJP seeks permission for a peaceful demonstration and the first Jantar Mantar gathering begins.',
+    type: 'protest' as const,
+  },
+  {
+    id: 'sit-in',
+    date: 'Jun 20',
+    title: 'The sit-in expands',
+    description:
+      'Hundreds bang steel plates and spoons — a satirical echo of the prime minister’s balcony call. The demand hardens: Education Minister Dharmendra Pradhan must resign over the paper leaks.',
+    type: 'protest' as const,
+  },
+  {
+    id: 'wangchuk',
+    date: 'Jun 28',
+    title: 'Wangchuk begins an indefinite fast',
+    description:
+      'Ramon Magsaysay awardee Sonam Wangchuk, who had called himself an “honorary cockroach”, begins a hunger strike at Jantar Mantar in support of the demand for Pradhan’s resignation.',
+    type: 'protest' as const,
+  },
+  {
+    id: 'charter',
+    date: 'Jul 15',
+    title: 'The five demands',
+    description:
+      'CJP releases its public charter: accountability for paper leaks, real exam reform, and justice for students. The document turns a viral protest into a set of concrete asks.',
+    type: 'statement' as const,
+  },
+  {
+    id: 'hospital',
+    date: 'Jul 18',
+    title: 'Wangchuk removed to hospital',
+    description:
+      'As his fast weakens, authorities move Wangchuk to hospital. CJP calls it a forced removal from the site. Dipke begins his own hunger strike and announces the Chalo Sansad march for 20 July.',
+    type: 'violence' as const,
+  },
+  {
+    id: 'march',
+    date: 'Jul 20',
+    title: 'Chalo Sansad — and a lathi charge',
+    description:
+      'Thousands try to march to Parliament on the opening day of the monsoon session. Police use barricades, batons and tear gas. Delhi Police counts around 180 injured, including personnel; protesters say a peaceful march was met with force. The grounds are cleared and rebuilt overnight.',
+    type: 'violence' as const,
+  },
+  {
+    id: 'fast-ends',
+    date: 'Jul 23',
+    title: 'Wangchuk ends his 26-day fast',
+    description:
+      'Union ministers JP Nadda and Jitendra Singh visit Wangchuk with written assurances: fast-track courts, a stricter law against paper leaks, no cases against peaceful protesters, and a parliamentary discussion. He ends the fast.',
+    type: 'legal' as const,
+  },
+  {
+    id: 'resignation',
+    date: 'Jul 25',
+    title: 'Pradhan resigns. The protest is called off.',
+    description:
+      'Education Minister Dharmendra Pradhan tenders his resignation. After talks with the government, CJP calls off the agitation “in good faith” — and posts: “Cockroaches won. Democracy won.”',
+    type: 'victory' as const,
+  },
 ];
 
 const typeLabels: Record<string, string> = {
   protest: 'PROTEST',
-  legal: 'LEGAL',
+  legal: 'LEGAL / PROCESS',
   violence: 'CRACKDOWN',
-  solidarity: 'SOLIDARITY',
   statement: 'STATEMENT',
+  victory: 'OUTCOME',
 };
 
 const voiceEntries = [
   {
-    id: 'teesta',
-    speaker: 'Teesta Setalvad',
-    role: 'Secretary, CJP',
+    id: 'dipke',
+    speaker: 'Abhijeet Dipke',
+    role: 'Founder, Cockroach Janta Party',
     type: 'speech' as const,
-    audio: '/audio/teesta.mp3',
+    audio: '/audio/dipke.mp3',
+    source: 'NDTV',
+    sourceUrl: 'https://www.youtube.com/watch?v=vDD5ZgZpezk',
+    sourceNote: '25 July 2026 · 0:07–0:38',
     transcript:
-      'हम यहाँ जंतर मंतर पर सिर्फ़ विरोध करने नहीं, बल्कि गवाह बनकर खड़े हैं। हमारे पीछे खड़े ये यंत्र समय को इतनी सटीकता से मापते हैं। हम माँग करते हैं कि न्याय में भी वही सटीकता हो। जिस दिन एफ आई आर दर्ज नहीं होती, उस दिन संविधान का खून बहता है।',
+      'We have done it. We have done it. धर्मेंद्र प्रधान ने रिज़ाइन कर दिया है। क्या कहते थे ये? क्या कहते थे? इस सरकार में इस्तीफ़े नहीं होते। हम कहना चाहते हैं — झुकती है दुनिया, झुकाने वाला चाहिए।',
     translation:
-      'We stand here at Jantar Mantar not just as protesters, but as witnesses. The instruments behind us measure time with precision. We demand that same precision in justice. Every day without an FIR is a day the Constitution bleeds.',
+      'We have done it. We have done it. Dharmendra Pradhan has resigned. What did they say? What did they say? That there are no resignations in this government. We want to say — the world bows, but it takes someone to make it bow.',
   },
   {
-    id: 'harsh',
-    speaker: 'Harsh Mander',
-    role: 'Human Rights Activist',
+    id: 'wangchuk',
+    speaker: 'Sonam Wangchuk',
+    role: 'Education reformer · On hunger strike',
     type: 'speech' as const,
-    audio: '/audio/harsh.mp3',
+    audio: '/audio/wangchuk.mp3',
+    source: 'Sonam Wangchuk (official channel)',
+    sourceUrl: 'https://www.youtube.com/watch?v=euPMOFtH_38',
+    sourceNote: '28 June 2026 · Day 14 of the fast',
     transcript:
-      'यह वेधशाला आकाश के पिंडों को देखने के लिए बनाई गई थी। आज यह हमारे गणतंत्र के नैतिक आकाश को देख रही है। जब राज्य अपने ही नागरिकों के खिलाफ़ खड़ा हो जाए, तब हर संस्थान को प्रतिरोध की जगह बनना पड़ता है। जंतर मंतर अब वादे और उसके पूरा होने के बीच की दूरी नाप रहा है।',
+      'नमस्कार साथियों। आप लोगों में से ज़्यादातर को तो पता चल ही चुका होगा कि हम पिछले 14 दिनों से यहां जंतर मंतर पे अनशन पे हैं — नमक और पानी पे। जो नीट की परीक्षाओं में 20 बच्चों ने आत्महत्याएं की हैं, या शिक्षा प्रणाली में सुधार की जो ज़रूरत है, उसके लिए सब सरकार से जवाबदेही मांगने के लिए…',
     translation:
-      'This observatory was built to track celestial bodies. Today it tracks the moral cosmos of our republic. When the state turns against its citizens, every institution must become a site of resistance. Jantar Mantar now measures the distance between promise and performance.',
+      'Greetings, friends. Most of you already know that we have been on a hunger strike here at Jantar Mantar for the last 14 days — on salt and water. For the 20 children who died by suicide over the NEET examinations, and for the reforms our education system needs — to demand accountability from the government…',
   },
   {
-    id: 'survivor-1',
-    speaker: 'Anonymous Survivor',
-    role: 'Victim of Violence',
+    id: 'student',
+    speaker: 'SSC aspirant',
+    role: 'Student at Jantar Mantar · Name not stated in source',
     type: 'testimony' as const,
-    audio: '/audio/survivor.mp3',
+    audio: '/audio/student.mp3',
+    source: 'The Hindu (ground report)',
+    sourceUrl: 'https://www.youtube.com/watch?v=qa20AKineKc',
+    sourceNote: '1:11–1:36',
     transcript:
-      'वे रात में आए। हम सो रहे थे। जूतों की आवाज़, चीख़ें, तंबू फटने की आवाज़। मैंने देखा कि वे मेरे भाई को खींचकर ले गए। हम अपराधी नहीं हैं। हम नागरिक हैं, जो न्याय माँग रहे हैं। क्या यह माँगना बहुत ज़्यादा है?',
+      'ये मेरे डोमेन में एसएससी का पेपर आता था। मुझे आता था तो मैंने दिया। मेरे नंबर जो इस बार दिल्ली पुलिस कांस्टेबल में थे, वो 75 मार्क्स थे। तो क्या ये मेरी गलती है कि आपने ईजी शिफ्ट में मेरा नंबर रखा? ... अब यह हुआ है कि मेरे 75 मार्क्स से 10 नंबर काट के 65 कर दिया। मैं इन लिस्ट था और मैं आउट ऑफ द लिस्ट हो गया।',
     translation:
-      'They came at night. We were sleeping. The sound of boots, the shouting, the tearing of tents. I saw them drag away my brother. We are not criminals. We are citizens asking for justice. Is that too much to ask?',
+      'The SSC paper was from my domain. I knew it, so I attempted it. My marks in this year’s Delhi Police Constable exam were 75. Is it my fault that you put my paper in an easy shift? ... Now what has happened is — from my 75 marks, 10 were cut and it became 65. I was on the list, and I went out of the list.',
   },
   {
-    id: 'lawyer-1',
-    speaker: 'Advocate Vrinda Grover',
-    role: 'Legal Counsel',
-    type: 'speech' as const,
-    audio: '/audio/lawyer.mp3',
+    id: 'parent',
+    speaker: 'Parent at the protest',
+    role: 'Father of a student · Name not stated in source',
+    type: 'testimony' as const,
+    audio: '/audio/parent.mp3',
+    source: 'The Hindu (ground report)',
+    sourceUrl: 'https://www.youtube.com/watch?v=qa20AKineKc',
+    sourceNote: '3:28–3:42',
     transcript:
-      'कानून स्पष्ट है। सी आर पी सी की धारा एक सौ चौवन में एफ आई आर दर्ज करना अनिवार्य है। सुप्रीम कोर्ट ने ललिता कुमारी बनाम उत्तर प्रदेश राज्य में इसे बाध्यकारी बनाया है। पुलिस का इनकार कोई विवेकाधिकार नहीं है। यह अदालत की अवमानना है। हम हर कानूनी रास्ता अपनाएँगे।',
+      'मैं एक बाप बन के आया हूं। मैं किसी अपने बच्चे के बाप हूं। तो मैं प्रोटेस्ट में हाजिर हुआ। मैं हाजिरी देने आया हूं। आने वाले वक्त में मैं समझता हूं कि मोदी सरकार नहीं रहेगी, और प्रधान को तो इस्तीफा देना ही होगा।',
     translation:
-      'The law is clear. Section 154 CrPC mandates FIR registration. The Supreme Court in Lalita Kumari vs State of UP made it binding. Police refusal is not discretion — it is contempt. We will pursue every legal remedy.',
+      'I have come here as a father. I am the father of someone’s child. So I came to the protest. I have come to show up. In the times to come, I believe the Modi government will not remain, and Pradhan will have to resign.',
   },
   {
-    id: 'chant-1',
-    speaker: 'Protesters',
-    role: 'Collective Voice',
+    id: 'cjp-rep',
+    speaker: 'CJP organiser',
+    role: 'Speaking to reporters at Jantar Mantar · Name not stated in source',
+    type: 'testimony' as const,
+    audio: '/audio/cjp-rep.mp3',
+    source: 'The Indian Express',
+    sourceUrl: 'https://www.youtube.com/watch?v=BNS7Tr6ngmo',
+    sourceNote: '20 June 2026 · 0:00–0:19',
+    transcript:
+      'वाशरूम का एक्सेस, पानी का एक्सेस, लाइट का एक्सेस। यहां पे इतनी सारी वुमेन प्रोटेस्टर्स हैं, और लाइट इतना कम है। अगर कुछ भी प्रॉब्लम हो जाता है तो दिल्ली पुलिस विल बी रेस्पोंसिबल। आज अगर आपने इस तरह की हरकतें जारी रखीं, तो करोड़ों युवाओं का आप पर से भरोसा उठ जाएगा। ये लड़ाई हम आपके बच्चों के लिए भी लड़ रहे हैं।',
+    translation:
+      'Access to washrooms, access to water, access to light. There are so many women protesters here, and the light is so low. If anything happens, Delhi Police will be responsible. If you keep behaving like this, millions of young people will lose faith in you. We are fighting this fight for your children too.',
+  },
+  {
+    id: 'chant',
+    speaker: 'Protesters at Jantar Mantar',
+    role: 'Collective voice',
     type: 'chant' as const,
     audio: '/audio/chant.mp3',
+    source: 'The Hindu (ground report)',
+    sourceUrl: 'https://www.youtube.com/watch?v=qa20AKineKc',
+    sourceNote: '2:36–2:59 · crowd chant, partially indistinct',
     transcript:
-      'न्याय दो! न्याय दो! इंक़लाब ज़िंदाबाद! संविधान बचाओ! देश बचाओ! हम क्या चाहते हैं? न्याय! कब चाहते हैं? अभी! अभी!',
+      'जय भीम! जय भीम! जय भीम! बदलो-बदलो आज की शिक्षा! नहीं तो जागे युवा हुए तैयार!',
     translation:
-      'Give us justice, give us justice / Long live the revolution / Save the Constitution / Save the country / What do we want? Justice! / When do we want it? Now!',
+      'Jai Bhim! Jai Bhim! Jai Bhim! Change today’s education — or the youth have awakened, ready!',
   },
 ];
 
 const groundHotspots = [
-  { id: 'stage', title: 'Main Stage', description: 'Where speakers addressed the crowd. Microphone, banner, CJP flags.' },
-  { id: 'tents', title: 'Protest Tents', description: 'Overnight shelter for protesters. Removed during police action.' },
-  { id: 'medical', title: 'Medical Camp', description: 'Volunteer doctors treating injuries, dehydration, stress.' },
-  { id: 'legal', title: 'Legal Aid Desk', description: 'Lawyers filing petitions, documenting detentions, providing counsel.' },
-  { id: 'media', title: 'Press Area', description: 'Independent journalists documenting. Some equipment seized.' },
-  { id: 'samrat', title: 'Samrat Yantra', description: 'The giant sundial. Its shadow marked protest hours. Now a witness.' },
-];
-
-const solidarityCities = [
-  { name: 'Mumbai', state: 'Maharashtra', count: 3000, description: 'Azad Maidan solidarity gathering with students, lawyers, artists.', participants: '3,000+', date: 'Jan 28' },
-  { name: 'Bangalore', state: 'Karnataka', count: 1500, description: 'Town Hall protest by student unions, civil society groups.', participants: '1,500+', date: 'Jan 29' },
-  { name: 'Kolkata', state: 'West Bengal', count: 2200, description: 'College Street march culminating at Gandhi Statue.', participants: '2,200+', date: 'Jan 29' },
-  { name: 'Chennai', state: 'Tamil Nadu', count: 800, description: 'Marina Beach candlelight vigil organized by law colleges.', participants: '800+', date: 'Jan 30' },
-  { name: 'Hyderabad', state: 'Telangana', count: 1200, description: 'Indira Park demonstration by minority rights organizations.', participants: '1,200+', date: 'Jan 30' },
-  { name: 'Kochi', state: 'Kerala', count: 900, description: 'Marine Drive human chain across religious communities.', participants: '900+', date: 'Jan 31' },
-];
-
-const actionItems = [
   {
-    id: 'donate',
-    title: 'Donate to Legal Fund',
-    description: 'Direct support for legal representation, court fees, documentation costs.',
-    cta: 'Donate Now',
-    variant: 'primary' as const,
+    id: 'samrat',
+    title: 'Samrat Yantra',
+    description:
+      'The giant sundial at the edge of the grounds — an 18th-century instrument of measurement that became the backdrop for demands of accountability.',
+  },
+  {
+    id: 'stage',
+    title: 'The people’s stage',
+    description:
+      'Where Abhijeet Dipke, Sonam Wangchuk and student organisers addressed the crowd through the evenings.',
+  },
+  {
+    id: 'tents',
+    title: 'Tents and the sit-in',
+    description:
+      'Shelter for students and families who stayed for weeks through Delhi’s summer heat and monsoon rain.',
+  },
+  {
+    id: 'langar',
+    title: 'Food, water and medical lines',
+    description:
+      'Volunteers ran food, water and medical support through the day. On 20 June, CJP accused Delhi Police of cutting off access to water, food and washrooms.',
+  },
+  {
+    id: 'barricades',
+    title: 'Police barricades',
+    description:
+      'On 20 July, layered barricades and heavy deployment stopped the Chalo Sansad march before it could reach Parliament.',
+  },
+  {
+    id: 'bangla-sahib',
+    title: 'Gurdwara Bangla Sahib',
+    description:
+      'The nearby gurdwara sheltered protesters during the baton charge and tear-gas shelling on 20 July.',
+  },
+];
+
+const outcomeCards = [
+  {
+    id: 'resignation',
+    title: 'The minister resigns',
+    date: 'Jul 25',
+    description:
+      'Union Education Minister Dharmendra Pradhan tenders his resignation — the movement’s central demand.',
+    icon: Scale,
+  },
+  {
+    id: 'cases',
+    title: 'No cases for peaceful protesters',
+    date: 'Jul 23–25',
+    description:
+      'Written assurances that peaceful protesters will not face action, and that cases will be reviewed and withdrawn.',
+    icon: ShieldCheck,
+  },
+  {
+    id: 'compensation',
+    title: 'Compensation promised',
+    date: 'Jul 23',
+    description:
+      'Support for the families of students who died by suicide amid the exam crisis, within government rules.',
     icon: Heart,
   },
   {
-    id: 'volunteer',
-    title: 'Volunteer Documentation',
-    description: 'Help transcribe, translate, archive testimonies and evidence.',
-    cta: 'Join Team',
-    variant: 'secondary' as const,
+    id: 'law',
+    title: 'A stricter paper-leak law',
+    date: 'Jul 23',
+    description:
+      'A commitment to fast-track courts and stronger penalties for exam paper leaks, plus a parliamentary discussion on the issue.',
+    icon: Gavel,
+  },
+  {
+    id: 'reform',
+    title: 'Exam reform on the table',
+    date: '2026 onwards',
+    description:
+      'A committee to examine exam reform and test security; NEET-UG is set to move to computer-based testing.',
     icon: BookOpen,
   },
   {
-    id: 'amplify',
-    title: 'Amplify on Social Media',
-    description: 'Share verified posts, use hashtags, tag representatives.',
-    cta: 'Share Toolkit',
-    variant: 'secondary' as const,
-    icon: Users,
+    id: 'watch',
+    title: 'What remains',
+    date: 'Ongoing',
+    description:
+      'The promises now need implementation — an independent probe into the leaks, compensation delivery, and cases actually withdrawn. CJP says its push for reform is not over.',
+    icon: Eye,
+  },
+];
+
+const sourceLinks = [
+  {
+    id: 'cjp',
+    title: 'Cockroach Janta Party',
+    publisher: 'Official website',
+    description: 'The movement’s charter, demands and public statements.',
+    href: 'https://www.cockroachjantaparty.org/',
+    icon: Globe,
   },
   {
-    id: 'petition',
-    title: 'Sign Parliamentary Petition',
-    description: 'Demand debate on communal violence accountability in Parliament.',
-    cta: 'Sign Petition',
-    variant: 'primary' as const,
-    icon: Scale,
+    id: 'ie',
+    title: 'Five key moments from the CJP protest',
+    publisher: 'The Indian Express',
+    description: 'A reported timeline from the courtroom remark to Pradhan’s resignation.',
+    href: 'https://indianexpress.com/article/india/cjp-protest-timeline-five-key-moments-dharmendra-pradhan-resignation-10803274/',
+    icon: Newspaper,
   },
   {
-    id: 'legal-aid',
-    title: 'Offer Pro Bono Legal Aid',
-    description: 'Lawyers needed for habeas corpus, PILs, victim representation.',
-    cta: 'Register',
-    variant: 'secondary' as const,
-    icon: Scale,
+    id: 'ap',
+    title: 'India’s Cockroach Party protest demands minister’s resignation',
+    publisher: 'AP News',
+    description: 'Ground report on the utensil-banging protest and the demand for accountability.',
+    href: 'https://apnews.com/article/india-cockroach-party-exam-leaks-protest-05fc69ad9aa4c59486acb734af5baa64',
+    icon: Newspaper,
   },
   {
-    id: 'report',
-    title: 'Report Hate Crimes',
-    description: 'Document incidents securely. Data feeds into CJP database.',
-    cta: 'Report Incident',
-    variant: 'danger' as const,
-    icon: BookOpen,
+    id: 'hindu',
+    title: 'Voices from the CJP protest at Jantar Mantar',
+    publisher: 'The Hindu',
+    description: 'Ground report with protester interviews and the crowd chants used in this documentary.',
+    href: 'https://www.youtube.com/watch?v=qa20AKineKc',
+    icon: Radio,
+  },
+  {
+    id: 'bbc',
+    title: 'How Jantar Mantar became the centre of India’s biggest protests',
+    publisher: 'BBC News India',
+    description: 'Explainer on the observatory-turned-protest-site and the movement around it.',
+    href: 'https://www.youtube.com/watch?v=M-6LtYNk3nA',
+    icon: Radio,
+  },
+  {
+    id: 'repo',
+    title: 'This documentary on GitHub',
+    publisher: 'Source code',
+    description: 'Reproducible audio preparation, corrections and the full commit history.',
+    href: 'https://github.com/Nightowl-w/cjp-documentary',
+    icon: Code2,
   },
 ];
 
 const creditsCategories = [
   {
-    title: 'Documentary Team',
-    items: ['Direction & Design', '3D & Creative Technology', 'Research & Writing', 'Editorial Oversight'],
+    title: 'The Documentary',
+    items: [
+      'Independent research, writing and edit',
+      'Design and art direction',
+      '3D scene and interaction',
+      'Timeline and source checks',
+    ],
   },
   {
-    title: 'CJP & Partners',
-    items: ['Teesta Setalvad (CJP)', 'Harsh Mander (CSJ)', 'Legal Team', 'Field Documenters'],
+    title: 'Audio Sources',
+    items: [
+      'Cockroach Janta Party (official)',
+      'Sonam Wangchuk (official)',
+      'NDTV',
+      'The Indian Express',
+      'The Hindu',
+    ],
   },
   {
     title: 'Technical',
-    items: ['Next.js / React Three Fiber', 'Framer Motion / GSAP', 'Tailwind CSS', 'Vercel Deployment'],
+    items: ['Next.js 15 / React 19', 'Three.js', 'Framer Motion', 'Tailwind CSS', 'Vercel'],
   },
   {
     title: 'Acknowledgments',
-    items: ['Protesters & Survivors', 'Independent Journalists', 'Pro Bono Lawyers', 'Open Source Community'],
+    items: [
+      'The students, parents and organisers who spoke on the record',
+      'Journalists who documented the protest',
+      'Everyone who marched on 20 July',
+      'In memory of the students who did not live to see the answer',
+    ],
   },
 ];
 
@@ -262,7 +484,7 @@ export default function ClientPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3, duration: 0.6 }}
                 >
-                  INTERACTIVE DOCUMENTARY
+                  INTERACTIVE DOCUMENTARY · 2026
                 </motion.span>
 
                 <motion.h1
@@ -271,9 +493,9 @@ export default function ClientPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.8 }}
                 >
-                  Citizens for Justice
+                  Cockroach
                   <br />
-                  <span className="gradient-gold">& Peace</span>
+                  <span className="gradient-gold">Janta Party</span>
                 </motion.h1>
 
                 <motion.h2
@@ -282,7 +504,7 @@ export default function ClientPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.7, duration: 0.8 }}
                 >
-                  Protest at Jantar Mantar — A Bearing of Witness
+                  Fifty days at Jantar Mantar that toppled an education minister
                 </motion.h2>
 
                 <motion.p
@@ -291,8 +513,8 @@ export default function ClientPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.9, duration: 0.8 }}
                 >
-                  An immersive chronicle of the 2024 CJP demonstration at Delhi's historic astronomical observatory. 
-                  Voices, timeline, and ground truth — documented with dignity.
+                  An interactive documentary on India’s 2026 youth uprising — from a courtroom insult
+                  to a countrywide movement demanding accountability for exam paper leaks.
                 </motion.p>
 
                 <motion.div
@@ -389,19 +611,21 @@ export default function ClientPage() {
                 <h3 className="text-xl font-medium mb-4">The Setting: Jantar Mantar</h3>
                 <div className="max-w-none text-muted-foreground leading-relaxed">
                   <p className="mb-4">
-                    Built in 1724 by Maharaja Jai Singh II, Jantar Mantar is an astronomical observatory of massive masonry instruments. 
-                    The Samrat Yantra (supreme instrument) — a 27-meter sundial — measures time to two-second precision. 
-                    The Jai Prakash Yantra maps celestial hemispheres. The Ram Yantra tracks altitude and azimuth.
+                    Built in 1724 by Maharaja Jai Singh II, Jantar Mantar is an observatory of giant
+                    masonry instruments. The Samrat Yantra — a 27-metre sundial — measures time. The
+                    Jai Prakash Yantra maps the sky in hemispheric bowls. The Ram Yantra tracks
+                    altitude and azimuth.
                   </p>
                   <p className="mb-4">
-                    In January 2024, Citizens for Justice and Peace chose this site deliberately. 
-                    <strong>Instruments of observation became witnesses to injustice.</strong> 
-                    The sundial's shadow marked not solar time, but the passing of constitutional time. 
-                    The celestial bowls collected not starlight, but testimonies. 
-                    The pillars stood not for astronomy, but for democratic pillars under strain.
+                    The ground beside it has spent decades as Delhi’s designated protest site — the
+                    closest citizens can legally gather to Parliament. In 2026 the two histories met.
+                    <strong> Instruments of observation became the backdrop for demands of accountability:</strong>{' '}
+                    how long a paper leak can go unanswered, how many students it costs, how many
+                    days a youth movement can hold a sit-in.
                   </p>
                   <p>
-                    This documentary maps that convergence — of history and present, of science and conscience, of silence and speech.
+                    The 3D canvas behind this page is an interpretive sketch of that site — its
+                    instruments, its timeline arc, its dust. It is a mood, not a survey.
                   </p>
                 </div>
               </motion.div>
@@ -425,10 +649,11 @@ export default function ClientPage() {
               >
                 <span className="text-caption font-medium text-accent-gold">02 — TIMELINE</span>
                 <h2 id="timeline-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
-                  Seven Days That Shook Conscience
+                  Seven Weeks That Shook the Capital
                 </h2>
                 <p className="text-muted-foreground">
-                  Scroll through the interactive 3D timeline above. Each node reveals a chapter.
+                  From a courtroom remark in May to a minister’s resignation in July. Dates follow
+                  contemporaneous reporting; disputed details are attributed to the source.
                 </p>
               </motion.div>
 
@@ -451,8 +676,8 @@ export default function ClientPage() {
                             event.type === 'protest' && 'bg-accent-gold/20 text-accent-gold',
                             event.type === 'legal' && 'bg-accent-teal/20 text-accent-teal',
                             event.type === 'violence' && 'bg-accent-crimson/20 text-accent-crimson',
-                            event.type === 'solidarity' && 'bg-purple-500/20 text-purple-400',
-                            event.type === 'statement' && 'bg-border text-muted-foreground'
+                            event.type === 'statement' && 'bg-border text-muted-foreground',
+                            event.type === 'victory' && 'bg-accent-gold/30 text-accent-gold'
                           )}>
                             {typeLabels[event.type]}
                           </span>
@@ -489,21 +714,22 @@ export default function ClientPage() {
               >
                 <span className="text-caption font-medium text-accent-gold">03 — VOICES</span>
                 <h2 id="voices-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
-                  Testimonies. Speeches. Silence.
+                  The Voices That Would Not Bow
                 </h2>
                 <p className="text-muted-foreground">
-                  The written record, read aloud in Hindi. Every clip is a synthesized narration —
-                  not an original recording — with the Hindi text and an English translation beneath
-                  each voice.
+                  Real recordings from the protest — the founder, a hunger striker, students, a
+                  parent, an organiser and the crowd. Each clip is a short, attributed excerpt from
+                  a public recording; transcripts follow the audio.
                 </p>
               </motion.div>
 
               <div className="mb-8 flex max-w-3xl items-start gap-3 rounded-lg border border-accent-gold/25 bg-accent-gold/5 p-4">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent-gold" aria-hidden="true" />
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  <span className="font-medium text-foreground">Audio note:</span> These voices are
-                  neural text-to-speech readings in Hindi, not recordings of the actual event. They
-                  are labelled so they cannot be mistaken for archival audio.
+                  <span className="font-medium text-foreground">Archive audio:</span> these are
+                  excerpts from public recordings by CJP, NDTV, The Indian Express and The Hindu.
+                  They are real voices, not synthesized narration. Excerpts are used for documentary
+                  commentary and are credited beneath every clip.
                 </p>
               </div>
 
@@ -530,17 +756,33 @@ export default function ClientPage() {
                       </div>
                       <div>
                         <h3 className="font-medium">{voice.speaker}</h3>
-                        <p className="text-caption text-muted-foreground">{voice.role} • Synthesized Hindi narration</p>
+                        <p className="text-caption text-muted-foreground">
+                          {voice.role} • <span className="text-accent-gold">Real recording</span>
+                        </p>
                       </div>
                     </div>
 
                     <div className="space-y-3">
                       <VoicePlayer id={voice.id} src={voice.audio} label={voice.speaker} />
 
+                      <p className="text-[11px] leading-relaxed text-muted-foreground">
+                        <a
+                          href={voice.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="link inline-flex items-center gap-1 font-medium text-accent-gold hover:text-accent-gold/70"
+                        >
+                          <ExternalLink className="h-3 w-3" aria-hidden="true" />
+                          {voice.source}
+                        </a>
+                        <span className="mx-1.5">·</span>
+                        {voice.sourceNote}
+                      </p>
+
                       <details className="group">
                         <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
                           <ChevronRight className="w-4 h-4 transition-transform group-open:rotate-90" />
-                          View Transcript
+                          View Transcript & Source
                         </summary>
                         <motion.div
                           className="mt-3 p-4 bg-background/50 rounded-lg border border-border/50"
@@ -568,10 +810,10 @@ export default function ClientPage() {
             </div>
           </section>
 
-          {/* Ground View Section */}
+          {/* The Site Section */}
           <section
             ref={(el) => { sectionRefs.current[4] = el; }}
-            id="ground"
+            id="site"
             className="section relative"
             aria-labelledby="ground-heading"
           >
@@ -583,35 +825,38 @@ export default function ClientPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-caption font-medium text-accent-gold">04 — GROUND VIEW</span>
+                <span className="text-caption font-medium text-accent-gold">04 — THE SITE</span>
                 <h2 id="ground-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
                   Stand Where They Stood
                 </h2>
                 <p className="text-muted-foreground">
-                  An immersive 3D reconstruction of the protest site. Navigate with mouse/touch.
+                  A short guide to the observatory-turned-protest site. The 3D scene behind this
+                  page sets the mood; the observations below come from reporting.
                 </p>
               </motion.div>
 
               <motion.div
-                className="card aspect-video relative overflow-hidden"
+                className="card p-8"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center">
-                      <MapPin className="w-8 h-8 text-accent-gold" />
-                    </div>
-                    <h3 className="text-xl font-medium mb-2">3D Ground View</h3>
-                    <p className="text-muted-foreground mb-6">
-                      Interactive reconstruction loading...<br />
-                      <span className="text-caption">Drag to orbit • Scroll to zoom • Click hotspots</span>
+                <div className="flex flex-col md:flex-row md:items-start gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center">
+                    <Landmark className="w-6 h-6 text-accent-gold" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-medium mb-3">The 3D scene behind this page</h3>
+                    <p className="text-muted-foreground leading-relaxed mb-3">
+                      The fixed canvas is a stylised, non-survey reconstruction of Jantar Mantar —
+                      its instruments, a protest arc, dust and flags. It uses simple geometry and
+                      particles rather than photogrammetry, and it is not a map of the ground.
                     </p>
-                    <Button variant="secondary" onClick={() => {}}>
-                      Enter Ground View
-                    </Button>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Use it as atmosphere. The notes in the cards are drawn from the reporting and
+                      recordings credited across this page.
+                    </p>
                   </div>
                 </div>
               </motion.div>
@@ -637,12 +882,12 @@ export default function ClientPage() {
             </div>
           </section>
 
-          {/* Solidarity Section */}
+          {/* Outcome Section */}
           <section
             ref={(el) => { sectionRefs.current[5] = el; }}
-            id="solidarity"
+            id="outcome"
             className="section relative"
-            aria-labelledby="solidarity-heading"
+            aria-labelledby="outcome-heading"
           >
             <div className="container-wide">
               <motion.div
@@ -652,19 +897,20 @@ export default function ClientPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-caption font-medium text-accent-gold">05 — SOLIDARITY</span>
-                <h2 id="solidarity-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
-                  The Ripple Across India
+                <span className="text-caption font-medium text-accent-gold">05 — OUTCOME</span>
+                <h2 id="outcome-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
+                  What the Protest Won
                 </h2>
                 <p className="text-muted-foreground">
-                  From Delhi to Kerala, Mumbai to Manipur — citizens stood in solidarity.
+                  The resignation was the headline demand. These are the commitments recorded as the
+                  protest ended — and what still needs watching.
                 </p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {solidarityCities.map((city, i) => (
+                {outcomeCards.map((card, i) => (
                   <motion.article
-                    key={city.name}
+                    key={card.id}
                     className="card-interactive group relative overflow-hidden"
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -672,50 +918,30 @@ export default function ClientPage() {
                     transition={{ delay: i * 0.06, duration: 0.5 }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-accent-gold/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative p-6">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h3 className="font-medium text-lg">{city.name}</h3>
-                          <p className="text-caption text-muted-foreground">{city.state}</p>
+                    <div className="relative">
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center">
+                          <card.icon className="w-6 h-6 text-accent-gold" aria-hidden="true" />
                         </div>
-                        <span className="text-2xl font-display font-light text-accent-gold/50">{city.count}+</span>
+                        <div>
+                          <h3 className="font-medium text-lg">{card.title}</h3>
+                          <p className="font-mono text-caption text-accent-gold/70">{card.date}</p>
+                        </div>
                       </div>
-                      <p className="text-muted-foreground text-sm mb-4">{city.description}</p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Users className="w-3 h-3" />
-                        <span>{city.participants} participants</span>
-                        <span className="mx-1">•</span>
-                        <span className="font-mono">{city.date}</span>
-                      </div>
+                      <p className="text-muted-foreground text-sm">{card.description}</p>
                     </div>
                   </motion.article>
                 ))}
               </div>
-
-              <motion.div
-                className="mt-12 p-8 rounded-xl bg-card border border-border glass text-center"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
-                <h3 className="text-xl font-medium mb-3">Add Your Voice</h3>
-                <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                  Were you there? Do you stand in solidarity? Share your message — it becomes part of the record.
-                </p>
-                <Button variant="primary" size="lg">
-                  Share Solidarity Message
-                </Button>
-              </motion.div>
             </div>
           </section>
 
-          {/* Action Section */}
+          {/* Sources Section */}
           <section
             ref={(el) => { sectionRefs.current[6] = el; }}
-            id="action"
+            id="sources"
             className="section relative"
-            aria-labelledby="action-heading"
+            aria-labelledby="sources-heading"
           >
             <div className="container-wide">
               <motion.div
@@ -725,71 +951,72 @@ export default function ClientPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-caption font-medium text-accent-gold">06 — ACTION</span>
-                <h2 id="action-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
-                  Bearing Witness Demands Action
+                <span className="text-caption font-medium text-accent-gold">06 — SOURCES</span>
+                <h2 id="sources-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
+                  Read the Record
                 </h2>
                 <p className="text-muted-foreground">
-                  Documentation is not enough. Here are concrete ways to support.
+                  This is an independent, unofficial documentary. Every claim on this page should be
+                  checkable — start with these.
                 </p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {actionItems.map((action, i) => (
+                {sourceLinks.map((source, i) => (
                   <motion.article
-                    key={action.id}
-                    className="card-interactive group"
+                    key={source.id}
+                    className="card-interactive group flex flex-col"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-50px' }}
                     transition={{ delay: i * 0.1, duration: 0.6 }}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className={cn(
-                        'flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center',
-                        action.variant === 'primary' && 'bg-accent-gold/10 text-accent-gold border border-accent-gold/30',
-                        action.variant === 'secondary' && 'bg-accent-teal/10 text-accent-teal border border-accent-teal/30',
-                        action.variant === 'danger' && 'bg-accent-crimson/10 text-accent-crimson border border-accent-crimson/30',
-                      )}>
-                        <action.icon className="w-6 h-6" aria-hidden="true" />
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center group-hover:bg-accent-gold/20 transition-colors">
+                        <source.icon className="w-6 h-6 text-accent-gold" aria-hidden="true" />
                       </div>
                       <div>
-                        <h3 className="font-medium mb-1">{action.title}</h3>
-                        <p className="text-muted-foreground text-sm mb-4">{action.description}</p>
-                        <Button variant={action.variant === 'primary' ? 'primary' : action.variant === 'danger' ? 'danger' : 'secondary'} size="sm">
-                          {action.cta}
-                        </Button>
+                        <h3 className="font-medium">{source.title}</h3>
+                        <p className="text-caption text-muted-foreground">{source.publisher}</p>
                       </div>
                     </div>
+                    <p className="text-muted-foreground text-sm flex-1 mb-4">{source.description}</p>
+                    <a
+                      href={source.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-gold transition-colors hover:text-accent-gold/70"
+                    >
+                      Open source
+                      <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                    </a>
                   </motion.article>
                 ))}
               </div>
 
               <motion.div
-                className="mt-16 p-8 rounded-xl bg-accent-crimson/10 border border-accent-crimson/30"
+                className="mt-12 rounded-xl border border-border/60 bg-card/60 p-8"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                transition={{ duration: 0.8 }}
               >
-                <h3 className="text-xl font-medium text-accent-crimson mb-3 flex items-center gap-2">
-                  <Heart className="w-6 h-6" />
-                  Immediate Support Needed
-                </h3>
-                <div className="grid md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <p className="font-medium">Legal Aid Helpline</p>
-                    <p className="text-muted-foreground">+91-XXX-XXX-XXXX (24/7)</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Medical Emergency</p>
-                    <p className="text-muted-foreground">+91-XXX-XXX-XXXX</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Documentation Team</p>
-                    <p className="text-muted-foreground">docs@cjp-documentary.org</p>
-                  </div>
-                </div>
+                <h3 className="text-xl font-medium mb-3">Corrections</h3>
+                <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+                  If a date, name or transcript on this page is wrong, open an issue on the GitHub
+                  repository. Audio excerpts are included for commentary and education; rights
+                  remain with the original creators, and any excerpt will be removed on request
+                  from the rights holder.
+                </p>
+                <a
+                  href="https://github.com/Nightowl-w/cjp-documentary/issues"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-gold transition-colors hover:text-accent-gold/70"
+                >
+                  Open an issue
+                  <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                </a>
               </motion.div>
             </div>
           </section>
@@ -845,12 +1072,22 @@ export default function ClientPage() {
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
                 <p className="text-muted-foreground mb-4">
-                  This documentary is dedicated to every voice that refused silence.
+                  For the students who asked only for a fair exam — and for everyone who kept
+                  showing up.
                 </p>
                 <p className="text-sm text-muted-foreground/70">
-                  Built with Next.js 15, Three.js, Framer Motion, GSAP. 
-                  Deployed on Vercel. Open source on 
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="link">GitHub</a>.
+                  Unofficial documentary. Not affiliated with the Cockroach Janta Party or any
+                  political party. Built with Next.js 15, Three.js, Framer Motion and Tailwind CSS.
+                  Open source on{' '}
+                  <a
+                    href="https://github.com/Nightowl-w/cjp-documentary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link"
+                  >
+                    GitHub
+                  </a>
+                  .
                 </p>
               </motion.div>
             </div>

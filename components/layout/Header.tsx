@@ -6,15 +6,15 @@ import { usePreferences } from '@/components/providers/PreferencesProvider';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sun, Moon, Menu, X, Scale, BookOpen, MapPin, Mic, Users, Heart } from 'lucide-react';
+import { Sun, Moon, Menu, X, Scale, BookOpen, MapPin, Mic, Landmark, Newspaper } from 'lucide-react';
 
 const navItems = [
   { href: '/#context', label: 'Context', icon: BookOpen },
   { href: '/#timeline', label: 'Timeline', icon: MapPin },
   { href: '/#voices', label: 'Voices', icon: Mic },
-  { href: '/#ground', label: 'Ground View', icon: Users },
-  { href: '/#solidarity', label: 'Solidarity', icon: Heart },
-  { href: '/#action', label: 'Take Action', icon: Scale },
+  { href: '/#site', label: 'The Site', icon: Landmark },
+  { href: '/#outcome', label: 'Outcome', icon: Scale },
+  { href: '/#sources', label: 'Sources', icon: Newspaper },
 ];
 
 export function Header() {

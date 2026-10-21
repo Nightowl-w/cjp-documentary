@@ -1,140 +1,106 @@
-# CJP Protest at Jantar Mantar — Interactive Documentary
+# Cockroach Janta Party at Jantar Mantar — Interactive Documentary
 
-An immersive, respectful, world-class interactive documentary documenting the Citizens for Justice and Peace (CJP) protest at Jantar Mantar, New Delhi.
+An independent, unofficial interactive documentary on the 2026 Cockroach Janta Party (CJP) protest at Jantar Mantar, New Delhi — from the Supreme Court remark that gave the movement its name to Education Minister Dharmendra Pradhan's resignation on 25 July 2026.
 
-## Live Demo
+**Live:** [cjp-documentary.vercel.app](https://cjp-documentary.vercel.app)
 
-**[cjp-documentary.vercel.app](https://cjp-documentary.vercel.app)**
+## What the site contains
 
-## Tech Stack
+- **Cinematic 3D scene** — a stylised, non-survey reconstruction of Jantar Mantar's instruments, built with vanilla Three.js and scroll-driven camera motion.
+- **Real audio excerpts** — recorded voices from the protest (Abhijeet Dipke, Sonam Wangchuk, students, a parent, a CJP organiser and a crowd chant), each credited with its source and timestamp. No text-to-speech, no voice cloning.
+- **Reported timeline** — May to July 2026, with disputed figures attributed to their source.
+- **Outcome section** — the resignation and the written assurances that ended the fast, plus what still needs watching.
+- **Sources page content** — direct links to The Indian Express, AP News, The Hindu, BBC News India and official CJP channels.
+- **Accessibility** — reduced-motion support, keyboard-navigable audio players, opt-in audio, no autoplay.
+
+## Tech stack
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Next.js 15 (App Router) + TypeScript |
-| 3D | Three.js + React Three Fiber + Drei |
-| Animation | Framer Motion + GSAP ScrollTrigger |
-| Styling | Tailwind CSS + CSS Variables |
-| Fonts | Space Grotesk, Inter, JetBrains Mono (Variable) |
+| Framework | Next.js 15.5 (App Router) + TypeScript |
+| 3D | Three.js 0.186 (vanilla, no React Three Fiber) |
+| Animation | Framer Motion |
+| Styling | Tailwind CSS 3 + CSS variables |
+| Fonts | Space Grotesk, Inter, JetBrains Mono |
 | Deployment | Vercel |
 
-## Features
+## Real audio
 
-- **Cinematic 3D scene**: Jantar Mantar astronomical instruments recreated in Three.js — Samrat Yantra (sundial), Jai Prakash Yantra (hemispheric bowls), Ram Yantra (pillars), Misra Yantra
-- **Particle systems**: Additive-blended shader particles representing voices, dust, and suppressed documents
-- **Scroll-driven narrative**: GSAP ScrollTrigger orchestrates camera movement, section reveals, and timeline progression
-- **Interactive timeline**: 7 key events from protest announcement to ongoing legal struggle
-- **Voices section**: Audio players with waveform visualization, transcripts, and speaker info
-- **Solidarity map**: Cities across India that stood in support
-- **Action section**: Legal aid, volunteer, donation, petition links
-- **Accessibility**: WCAG AA compliant, `prefers-reduced-motion` honored, keyboard navigable
-- **Performance**: < 120KB initial JS, optimized images/videos, lazy-loaded 3D assets
+Audio clips live in `public/audio/` and are short excerpts of public recordings, used for documentary commentary and education. Rights remain with the original creators (CJP, Sonam Wangchuk, NDTV, The Indian Express, The Hindu). Every clip links back to its full source on the site.
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 20+
-- npm, yarn, or pnpm
-- GitHub account + GitHub CLI (`gh`) — optional but recommended
-- Vercel account + Vercel CLI (`vercel`) — optional but recommended
-
-### Installation
+To reproduce the excerpts:
 
 ```bash
-# Clone the repository
-git clone https://github.com/Nightowl-w/cjp-documentary.git
-cd cjp-documentary
-
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Open http://localhost:3000
+python -m pip install yt-dlp          # ffmpeg also required (or imageio-ffmpeg)
+python scripts/prepare-audio.py
 ```
 
-### Build for Production
+`scripts/prepare-audio.py` documents each clip's source, start/end time and credit line. Downloads are audio-only; full videos stay on their original platforms.
+
+## Getting started
+
+```bash
+git clone https://github.com/Nightowl-w/cjp-documentary.git
+cd cjp-documentary
+npm install
+npm run dev          # http://localhost:3000
+```
+
+Production build:
 
 ```bash
 npm run build
 npm run start
 ```
 
-### Deploy to Vercel
+Deploy: connect the GitHub repository on Vercel for automatic deployments, or run `vercel --prod`.
 
-```bash
-# Install Vercel CLI (if not already installed)
-npm i -g vercel
-
-# Login
-vercel login
-
-# Deploy
-vercel --prod
-```
-
-Or connect your GitHub repository directly on [vercel.com](https://vercel.com) for automatic deployments on every push.
-
-## Project Structure
+## Project structure
 
 ```
 cjp-documentary/
 ├── app/
-│   ├── layout.tsx          # Root layout, fonts, providers
-│   ├── page.tsx            # Main documentary page (all sections)
-│   ├── globals.css         # Design tokens, global styles
-│   └── fonts.ts            # Variable font loading
+│   ├── layout.tsx          # Metadata, fonts, providers
+│   ├── page.tsx            # Renders the client page
+│   ├── about/page.tsx      # Methodology, audio/fair use, privacy, credits
+│   ├── icon.svg            # Cockroach mark
+│   └── globals.css         # Design tokens
 ├── components/
-│   ├── three/              # React Three Fiber components
-│   │   ├── Scene.tsx       # Main canvas, lighting, post-processing
-│   │   ├── JantarMantar.tsx # Monument 3D models
-│   │   ├── ParticleSystem.tsx # Shader-based particles
-│   │   └── TimelinePath.tsx   # 3D timeline curve
-│   ├── ui/                 # Reusable UI components
-│   │   └── Button.tsx
-│   ├── layout/             # Layout components
-│   │   ├── Header.tsx
-│   │   └── Footer.tsx
-│   └── providers/          # Context providers
-│       └── PreferencesProvider.tsx
-├── lib/
-│   └── utils.ts            # Utility functions
-├── public/
-│   ├── models/             # GLTF/GLB 3D models
-│   ├── textures/
-│   ├── audio/
-│   └── videos/
-├── PRD.md                  # Product Requirements Document
-├── package.json
-├── tsconfig.json
-├── next.config.js
-├── tailwind.config.ts
-├── postcss.config.js
-└── .gitignore
+│   ├── pages/ClientPage.tsx        # Sections, timeline, voices data
+│   ├── three/Scene.tsx             # Vanilla Three.js scene + monuments
+│   ├── audio/VoicePlayer.tsx       # Play, pause, seek, duration
+│   ├── audio/useAmbientAudio.ts    # Generative Web Audio ambience
+│   ├── layout/Header.tsx
+│   ├── layout/Footer.tsx
+│   └── ui/                         # Button, ErrorBoundary
+├── lib/utils.ts
+├── public/audio/           # Six credited audio excerpts
+├── scripts/prepare-audio.py
+├── PRD.md
+└── package.json
 ```
 
-## Design Principles
+## Design principles
 
-1. **Respect first**: Every design decision honors the protesters, their cause, and the gravity of the subject
-2. **Truth over spectacle**: 3D and motion serve the narrative, never distract from it
-3. **Accessibility as baseline**: WCAG AA minimum, prefers-reduced-motion honored
-4. **Performance as respect**: Fast loading, works on mobile, low-bandwidth friendly
+1. **Accuracy first** — dates and figures follow reporting, and disputed claims are attributed.
+2. **No fake voices** — only real recordings, with source and timestamp on every clip.
+3. **Respect** — the documentary centres students and families, and avoids spectacle.
+4. **Accessibility as baseline** — reduced motion, keyboard support, opt-in audio.
+5. **Performance** — fast on mobile and low bandwidth.
 
-## Content Warning
+## Content warning
 
-This documentary contains descriptions of police violence and communal harm. Viewer discretion advised. Support resources are linked in the Action section.
+Contains descriptions of police violence, exam paper leaks and student suicides. Viewer discretion advised.
 
-## License
+## Disclaimer and licence
 
-This project is open source and available under the MIT License. Content used under fair use for documentation purposes.
+This is an unofficial documentary and is not affiliated with the Cockroach Janta Party or any political party. Audio excerpts remain the property of their creators and are used for commentary and education; takedown requests are honoured via the repository issues page. Code is released under the MIT License.
 
 ## Contact
 
-- **Website**: cjp-documentary.vercel.app
-- **GitHub**: https://github.com/Nightowl-w/cjp-documentary
-- **CJP Official**: https://cjp.org.in
+- GitHub: https://github.com/Nightowl-w/cjp-documentary
+- CJP official: https://www.cockroachjantaparty.org/
 
 ---
 
-*This documentary bears witness. Truth persists.*
+*For the students who asked only for a fair exam.*
