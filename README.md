@@ -8,6 +8,8 @@ An independent, unofficial interactive documentary on the 2026 Cockroach Janta P
 
 - **Cinematic 3D scene** — a stylised, non-survey reconstruction of Jantar Mantar's instruments, built with vanilla Three.js and scroll-driven camera motion.
 - **Interactive 3D map** — an explorable map of the observatory, the protest camp and the route toward Parliament, with an eight-stop guided tour, golden-hour/day/night lighting, a march-route overlay and fullscreen mode. Drag to orbit, click labels for details, or press *Play the tour* to present it.
+- **Photo essay** — eleven attributed photographs from the camp in June and the crackdown on 20 July, reproduced from The Hindu, The Indian Express and Mint with their original captions. Includes a full-screen frame viewer, keyboard navigation and a contact sheet.
+- **Full recordings** — click-to-play cards that open the original NDTV, The Hindu, The Indian Express and Sonam Wangchuk videos on YouTube at the excerpt timestamps. Nothing is re-uploaded.
 - **Real audio excerpts** — recorded voices from the protest (Abhijeet Dipke, Sonam Wangchuk, students, a parent, a CJP organiser and a crowd chant), each credited with its source and timestamp. No text-to-speech, no voice cloning.
 - **Reported timeline** — May to July 2026, with disputed figures attributed to their source.
 - **Outcome section** — the resignation and the written assurances that ended the fast, plus what still needs watching.
@@ -37,6 +39,16 @@ python scripts/prepare-audio.py
 ```
 
 `scripts/prepare-audio.py` documents each clip's source, start/end time and credit line. Downloads are audio-only; full videos stay on their original platforms.
+
+## Photographs
+
+The photo essay uses eleven stills hosted locally in `public/photos/`, downscaled for the web from the publishers' originals. Each frame carries its publisher caption, date, place and credit, and links to the article it came from:
+
+- **The Hindu** — Akul Baiju's photographs of 20 July 2026.
+- **The Indian Express** — Express Photo from the second Jantar Mantar protest.
+- **Mint** — PTI and agency photographs from 6 June 2026.
+
+Photographs are reproduced for documentary commentary and education. Rights remain with the photographers and publishers; any frame will be removed on request through the repository issues page. The photographs are not generative or reconstructed — they are the published record, with the publishers' own captions.
 
 ## Getting started
 
@@ -68,6 +80,8 @@ cjp-documentary/
 │   └── globals.css         # Design tokens
 ├── components/
 │   ├── pages/ClientPage.tsx        # Sections, timeline, voices data
+│   ├── documentary/PhotoEssay.tsx  # Photo essay, viewer, video cards
+│   ├── documentary/mediaData.ts    # Photo/video credits and captions
 │   ├── three/Scene.tsx             # Vanilla Three.js background scene
 │   ├── three/JantarMantarMap.tsx   # Interactive map: UI, tour, labels
 │   ├── three/map/world.ts          # Map geometry, lighting, animation
@@ -80,6 +94,7 @@ cjp-documentary/
 │   └── ui/                         # Button, ErrorBoundary
 ├── lib/utils.ts
 ├── public/audio/           # Six credited audio excerpts
+├── public/photos/          # Eleven credited photo-essay frames
 ├── scripts/prepare-audio.py
 ├── PRD.md
 └── package.json
@@ -95,11 +110,11 @@ cjp-documentary/
 
 ## Content warning
 
-Contains descriptions of police violence, exam paper leaks and student suicides. Viewer discretion advised.
+Contains descriptions of police violence, exam paper leaks and student suicides, and photographs of the 20 July crackdown. Viewer discretion advised.
 
 ## Disclaimer and licence
 
-This is an unofficial documentary and is not affiliated with the Cockroach Janta Party or any political party. Audio excerpts remain the property of their creators and are used for commentary and education; takedown requests are honoured via the repository issues page. Code is released under the MIT License.
+This is an unofficial documentary and is not affiliated with the Cockroach Janta Party or any political party. Audio excerpts and photographs remain the property of their creators and publishers and are used for commentary and education; takedown requests are honoured via the repository issues page. Code is released under the MIT License.
 
 ## Contact
 

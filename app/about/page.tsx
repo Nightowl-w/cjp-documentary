@@ -4,9 +4,9 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: 'Methodology, Audio & Credits — Cockroach Janta Party Documentary',
+  title: 'Methodology, Media & Credits — Cockroach Janta Party Documentary',
   description:
-    'How this interactive documentary was researched, how the real audio excerpts were prepared, and how visitor privacy is handled.',
+    'How this interactive documentary was researched, how the real photographs and audio excerpts were sourced, and how visitor privacy is handled.',
 };
 
 const sections = [
@@ -17,15 +17,17 @@ const sections = [
       'This documentary is assembled from public reporting and public recordings: The Indian Express, AP News, The Hindu, BBC News India, and the official channels of the Cockroach Janta Party and Sonam Wangchuk. Dates follow contemporaneous reporting. Disputed figures are attributed to the side that gave them — for example, the injury count from the 20 July march is described as Delhi Police’s figure, while protesters’ accounts are reported separately.',
       'The timeline covers May to July 2026, from the Supreme Court remark that gave the movement its name to Education Minister Dharmendra Pradhan’s resignation on 25 July. The 3D reconstruction of Jantar Mantar is an interpretive visualisation, not a survey-grade model: proportions and placement are approximate and intended to convey scale and atmosphere. The interactive map on the home page follows the same rule — it is a storytelling device, not a surveyed plan, and its guided tour narrates the camp and the 20 July march rather than claiming geographic precision.',
       'The voice clips are real excerpts from public recordings — not text-to-speech and not dramatic reconstructions. Every clip carries its source, date and timestamp in the Voices section. Transcripts follow the recording; where crowd audio is partially indistinct, the transcript is marked as approximate.',
+      'The photo essay uses eleven published press photographs, not reconstructions: seven by Akul Baiju for The Hindu, two Express Photo frames from The Indian Express, and two Mint photographs. Each frame carries the publisher’s caption, date, place and credit, and links to the article it came from. The full recordings behind the audio excerpts stay on their original platforms and are linked from the In Pictures section; nothing is re-uploaded.',
       'Corrections and additional context are welcome. Documentation is treated as a living record, and this page will note substantive updates as they are verified.',
     ],
   },
   {
     id: 'audio',
-    title: 'Audio & Fair Use',
+    title: 'Photographs, Audio & Fair Use',
     body: [
       'Audio excerpts on this site are short extracts of publicly available recordings, used for documentary commentary, criticism and education. Rights remain with the original creators: the Cockroach Janta Party, Sonam Wangchuk, NDTV, The Indian Express and The Hindu. Each excerpt links to its full source so listeners can watch the complete recording in context.',
-      'No synthetic narration or voice cloning is used anywhere in the documentary. If you are a rights holder and want an excerpt removed, open an issue on the GitHub repository and it will be taken down promptly.',
+      'Photographs are reproduced from the reporting of The Hindu, The Indian Express and Mint, with the publishers’ own captions and credit. They are used for documentary commentary and education; rights remain with the photographers and publishers. No generative imagery is used. If you are a rights holder and want a photograph or excerpt removed, open an issue on the GitHub repository and it will be taken down promptly.',
+      'No synthetic narration or voice cloning is used anywhere in the documentary.',
     ],
   },
   {
@@ -89,7 +91,9 @@ export default function AboutPage() {
                 Research, writing, design and development by the documentary project. Built with
                 Next.js, Three.js, Framer Motion and Tailwind CSS. Deployed on Vercel. Open source
                 on GitHub — including the script that prepares the audio excerpts from their
-                original sources. Dedicated to the students who asked only for a fair exam.
+                original sources. Press photographs by Akul Baiju (The Hindu), Express Photo (The
+                Indian Express), PTI and Mint. Dedicated to the students who asked only for a fair
+                exam.
               </p>
               <div className="mt-6 flex flex-wrap gap-4 text-sm">
                 <a

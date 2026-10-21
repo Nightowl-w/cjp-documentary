@@ -6,12 +6,13 @@ import { usePreferences } from '@/components/providers/PreferencesProvider';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sun, Moon, Menu, X, Scale, BookOpen, MapPin, Mic, Landmark, Newspaper } from 'lucide-react';
+import { Sun, Moon, Menu, X, Scale, BookOpen, MapPin, Mic, Landmark, Newspaper, Camera } from 'lucide-react';
 
 const navItems = [
   { href: '/#context', label: 'Context', icon: BookOpen },
   { href: '/#timeline', label: 'Timeline', icon: MapPin },
   { href: '/#voices', label: 'Voices', icon: Mic },
+  { href: '/#photos', label: 'Photos', icon: Camera },
   { href: '/#site', label: 'The Site', icon: Landmark },
   { href: '/#outcome', label: 'Outcome', icon: Scale },
   { href: '/#sources', label: 'Sources', icon: Newspaper },
@@ -41,7 +42,7 @@ export function Header() {
             >
               CJP
             </motion.span>
-            <span className="hidden sm:block text-xs text-muted-foreground uppercase tracking-widest">
+            <span className="hidden lg:block text-xs text-muted-foreground uppercase tracking-widest">
               Documentary
             </span>
           </Link>
@@ -52,14 +53,14 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-muted-foreground',
+                  'relative flex items-center gap-1.5 whitespace-nowrap px-3 py-2 text-sm font-medium text-muted-foreground',
                   'hover:text-foreground transition-colors duration-300',
                   'rounded-md hover:bg-accent/10',
                   'after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[2px] after:bg-accent-gold after:transition-all after:duration-300 hover:after:w-3/4'
                 )}
                 style={{ transitionDelay: `${i * 50}ms` }}
               >
-                <item.icon className="w-4 h-4" aria-hidden="true" />
+                <item.icon className="hidden w-4 h-4 xl:block" aria-hidden="true" />
                 <span>{item.label}</span>
               </Link>
             ))}

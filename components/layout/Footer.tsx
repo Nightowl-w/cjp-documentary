@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Code2, Globe, Scale, Heart, Users, BookOpen, Newspaper, Landmark } from 'lucide-react';
+import { Code2, Globe, Scale, Heart, Users, BookOpen, Newspaper, Landmark, Camera } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -55,6 +55,7 @@ export function Footer() {
                   { href: '/#context', label: 'Context', icon: BookOpen },
                   { href: '/#timeline', label: 'Timeline', icon: Scale },
                   { href: '/#voices', label: 'Voices & Recordings', icon: Users },
+                  { href: '/#photos', label: 'In Pictures', icon: Camera },
                   { href: '/#site', label: 'The Site', icon: Landmark },
                   { href: '/#outcome', label: 'What the Protest Won', icon: Heart },
                   { href: '/#sources', label: 'Sources', icon: Newspaper },
@@ -101,15 +102,15 @@ export function Footer() {
           <div>
             <h3 className="font-display font-medium text-lg mb-4">About This Project</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
-              <li>Real audio excerpts, credited beneath every clip</li>
+              <li>Real photographs and audio excerpts, credited beneath every frame and clip</li>
               <li>Built with Next.js 15, Three.js, Framer Motion</li>
               <li>Designed for accessibility (WCAG AA)</li>
               <li>Optimised for performance & low bandwidth</li>
               <li>Open source on GitHub · Deployed on Vercel</li>
               <li className="pt-4 border-t border-border/50">
                 <span className="font-medium text-foreground">Content warning:</span> contains
-                descriptions of police violence, exam paper leaks and student suicides. Viewer
-                discretion advised.
+                descriptions of police violence, exam paper leaks and student suicides, and
+                photographs of the 20 July crackdown. Viewer discretion advised.
               </li>
               <li>
                 <span className="font-medium text-foreground">Disclaimer:</span> unofficial and not
@@ -121,8 +122,9 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border/50 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} CJP Documentary Project (unofficial). Audio excerpts remain the property
-            of their creators and are used for commentary and education.
+            © {currentYear} CJP Documentary Project (unofficial). Audio excerpts and photographs
+            remain the property of their creators and publishers and are used for commentary and
+            education.
           </p>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <Link href="/about#privacy" className="hover:text-accent-gold transition-colors">Privacy</Link>

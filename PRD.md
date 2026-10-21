@@ -36,10 +36,11 @@ An immersive, interactive documentary website documenting the Cockroach Janta Pa
 2. **Context** — A courtroom remark, the NEET/CBSE/SSC exam crisis, and why Jantar Mantar
 3. **Timeline** — Reported events from May to July 2026, disputed figures attributed
 4. **Voices** — Real audio excerpts with source credit, timestamp and bilingual transcript
-5. **The Site** — Interactive 3D map of the observatory and protest camp, with an eight-stop guided tour, day/night lighting, a march-route overlay and fullscreen presentation mode
-6. **Outcome** — The resignation, the written assurances, and what still needs watching
-7. **Sources** — Direct links to reporting and official channels, plus corrections
-8. **Credits / About** — Methodology, audio/fair use, privacy, credits
+5. **In Pictures** — Eleven credited press photographs of the camp and the 20 July crackdown, with a full-screen viewer, contact sheet and links to the original reporting; includes click-to-play cards for the full recordings
+6. **The Site** — Interactive 3D map of the observatory and protest camp, with an eight-stop guided tour, day/night lighting, a march-route overlay and fullscreen presentation mode
+7. **Outcome** — The resignation, the written assurances, and what still needs watching
+8. **Sources** — Direct links to reporting and official channels, plus corrections
+9. **Credits / About** — Methodology, media/fair use, privacy, credits
 
 ---
 
@@ -121,13 +122,16 @@ Light Mode:
 - News coverage (The Indian Express, AP News, The Hindu, BBC News India)
 - Official recordings (CJP YouTube, Sonam Wangchuk's channel)
 - Short, credited audio excerpts for the Voices section
+- Credited press photographs from The Hindu, The Indian Express and Mint for the photo essay
 - Publicly reported dates, figures and government assurances
 
-#### **Content Accuracy & Real Audio Policy**
+#### **Content Accuracy & Media Policy**
 - No text-to-speech, voice cloning or dramatic reconstructions anywhere in the documentary.
 - Every audio clip is a short excerpt of a public recording, credited with source, date and timestamp, and linked to its full recording.
+- Photographs are published press images, not reconstructions. Each frame carries the publisher's caption, date, place and credit, and links to the original article. No generative imagery is used.
+- Full videos stay on their original platforms; the site links to them at the excerpt timestamp and does not re-upload them.
 - Disputed figures (for example, injury counts on 20 July 2026) are attributed to the side that gave them.
-- Rights remain with the original creators; takedown requests are honoured via the GitHub repository issues page.
+- Rights remain with the original creators and publishers; takedown requests are honoured via the GitHub repository issues page.
 - The 3D scene is labelled as an interpretive, non-survey visualisation.
 
 #### **Tone Guidelines**
@@ -230,6 +234,7 @@ cjp-documentary/
 - [ ] Context section (scroll-triggered reveals)
 - [ ] Interactive 3D Timeline
 - [ ] Voices section (audio player + waveform)
+- [ ] In Pictures (photo essay, full-screen viewer, video cards)
 - [ ] Ground View (immersive 3D)
 - [ ] Solidarity map
 - [ ] Action/Resources

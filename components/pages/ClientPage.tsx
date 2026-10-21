@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll } from 'framer-motion';
 import { Scene } from '@/components/three/Scene';
 import { JantarMantarMap } from '@/components/three/JantarMantarMap';
+import { PhotoEssay } from '@/components/documentary/PhotoEssay';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/Button';
@@ -26,6 +27,7 @@ import {
   Info,
   Globe,
   Newspaper,
+  Camera,
   Radio,
   Code2,
   Map as MapIcon,
@@ -40,10 +42,11 @@ const sections = [
   { id: 'context', name: 'Context', index: 1 },
   { id: 'timeline', name: 'Timeline', index: 2 },
   { id: 'voices', name: 'Voices', index: 3 },
-  { id: 'site', name: 'The Site', index: 4 },
-  { id: 'outcome', name: 'Outcome', index: 5 },
-  { id: 'sources', name: 'Sources', index: 6 },
-  { id: 'credits', name: 'Credits', index: 7 },
+  { id: 'photos', name: 'Photos', index: 4 },
+  { id: 'site', name: 'The Site', index: 5 },
+  { id: 'outcome', name: 'Outcome', index: 6 },
+  { id: 'sources', name: 'Sources', index: 7 },
+  { id: 'credits', name: 'Credits', index: 8 },
 ];
 
 const contextCards = [
@@ -388,6 +391,30 @@ const sourceLinks = [
     icon: Radio,
   },
   {
+    id: 'hindu-photos',
+    title: 'When protest meets crackdown',
+    publisher: 'The Hindu · Photo essay',
+    description: 'Akul Baiju’s photographs of the 20 July crackdown and its aftermath.',
+    href: 'https://www.thehindu.com/photos/when-protest-meets-crackdown-cockroach-janta-party-protest-in-pictures/article71247873.ece',
+    icon: Camera,
+  },
+  {
+    id: 'ie-photos',
+    title: 'CJP holds second protest at Jantar Mantar',
+    publisher: 'The Indian Express · Photo essay',
+    description: 'Express Photo from the 20 June sit-in, thali protest and camp.',
+    href: 'https://indianexpress.com/photos/india-news/in-photos-cjp-holds-second-protest-at-jantar-mantar-over-exam-irregularities/',
+    icon: Camera,
+  },
+  {
+    id: 'mint-photos',
+    title: 'Inside CJP’s Jantar Mantar protest',
+    publisher: 'Mint · Visual story',
+    description: 'Placards, slogans, a tambourine and flowers from 6 June 2026.',
+    href: 'https://www.livemint.com/photos/inside-cjps-jantar-mantar-protest-a-visual-story-of-placards-slogans-tambourine-and-flowers-11780730802315.html',
+    icon: Camera,
+  },
+  {
     id: 'repo',
     title: 'This documentary on GitHub',
     publisher: 'Source code',
@@ -408,13 +435,15 @@ const creditsCategories = [
     ],
   },
   {
-    title: 'Audio Sources',
+    title: 'Media Sources',
     items: [
       'Cockroach Janta Party (official)',
       'Sonam Wangchuk (official)',
       'NDTV',
       'The Indian Express',
       'The Hindu',
+      'Mint',
+      'PTI (agency photographs)',
     ],
   },
   {
@@ -448,10 +477,34 @@ export default function ClientPage() {
   useEffect(() => {
     return scrollYProgress.on('change', (value) => {
       setScrollProgress(value);
-      const index = Math.min(Math.floor(value * sections.length), sections.length - 1);
-      setActiveSection(index);
     });
   }, [scrollYProgress]);
+
+  useEffect(() => {
+    const updateActiveSection = () => {
+      // The scroll-progress fraction is not proportional to section heights, so
+      // derive the active section from the actual document positions instead.
+      const marker = window.scrollY + window.innerHeight * 0.38;
+      let next = 0;
+
+      sectionRefs.current.forEach((element, index) => {
+        if (!element) return;
+        const top = element.getBoundingClientRect().top + window.scrollY;
+        if (top <= marker) next = index;
+      });
+
+      setActiveSection((current) => (current === next ? current : next));
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('resize', updateActiveSection);
+    };
+  }, []);
 
   const scrollToSection = (index: number) => {
     sectionRefs.current[index]?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
@@ -572,17 +625,16 @@ export default function ClientPage() {
                     size="lg"
                     onClick={() => {
                       const map = document.getElementById('jantar-mantar-map');
+                      // The photo essay sits between the hero and the map, so a smooth
+                      // scroll would take seconds. Jump to the map, then start the tour.
                       if (map) {
-                        map.scrollIntoView({
-                          behavior: reducedMotion ? 'auto' : 'smooth',
-                          block: 'center',
-                        });
+                        map.scrollIntoView({ behavior: 'auto', block: 'center' });
                       } else {
-                        scrollToSection(4);
+                        scrollToSection(5);
                       }
                       window.setTimeout(
                         () => window.dispatchEvent(new CustomEvent('cjp:map-tour')),
-                        reducedMotion ? 600 : 1200
+                        reducedMotion ? 350 : 700
                       );
                     }}
                   >
@@ -719,7 +771,7 @@ export default function ClientPage() {
                 </p>
               </motion.div>
 
-              <div className="space-y-6">
+              <div className="space-y-6 overflow-hidden">
                 {timelineEvents.map((event, i) => (
                   <motion.article
                     key={event.id}
@@ -872,9 +924,19 @@ export default function ClientPage() {
             </div>
           </section>
 
-          {/* The Site Section */}
+          {/* In Pictures Section */}
           <section
             ref={(el) => { sectionRefs.current[4] = el; }}
+            id="photos"
+            className="section relative border-y border-border/60 bg-background/95"
+            aria-labelledby="photos-heading"
+          >
+            <PhotoEssay />
+          </section>
+
+          {/* The Site Section */}
+          <section
+            ref={(el) => { sectionRefs.current[5] = el; }}
             id="site"
             className="section relative"
             aria-labelledby="ground-heading"
@@ -887,7 +949,7 @@ export default function ClientPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-caption font-medium text-accent-gold">04 — THE SITE</span>
+                <span className="text-caption font-medium text-accent-gold">05 — THE SITE</span>
                 <h2 id="ground-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
                   Stand Where They Stood
                 </h2>
@@ -938,7 +1000,7 @@ export default function ClientPage() {
 
           {/* Outcome Section */}
           <section
-            ref={(el) => { sectionRefs.current[5] = el; }}
+            ref={(el) => { sectionRefs.current[6] = el; }}
             id="outcome"
             className="section relative"
             aria-labelledby="outcome-heading"
@@ -951,7 +1013,7 @@ export default function ClientPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-caption font-medium text-accent-gold">05 — OUTCOME</span>
+                <span className="text-caption font-medium text-accent-gold">06 — OUTCOME</span>
                 <h2 id="outcome-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
                   What the Protest Won
                 </h2>
@@ -992,7 +1054,7 @@ export default function ClientPage() {
 
           {/* Sources Section */}
           <section
-            ref={(el) => { sectionRefs.current[6] = el; }}
+            ref={(el) => { sectionRefs.current[7] = el; }}
             id="sources"
             className="section relative"
             aria-labelledby="sources-heading"
@@ -1005,7 +1067,7 @@ export default function ClientPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-caption font-medium text-accent-gold">06 — SOURCES</span>
+                <span className="text-caption font-medium text-accent-gold">07 — SOURCES</span>
                 <h2 id="sources-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
                   Read the Record
                 </h2>
@@ -1058,9 +1120,9 @@ export default function ClientPage() {
                 <h3 className="text-xl font-medium mb-3">Corrections</h3>
                 <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
                   If a date, name or transcript on this page is wrong, open an issue on the GitHub
-                  repository. Audio excerpts are included for commentary and education; rights
-                  remain with the original creators, and any excerpt will be removed on request
-                  from the rights holder.
+                  repository. Audio excerpts and photographs are included for commentary and
+                  education; rights remain with the original creators and publishers, and any
+                  excerpt or frame will be removed on request from the rights holder.
                 </p>
                 <a
                   href="https://github.com/Nightowl-w/cjp-documentary/issues"
@@ -1077,7 +1139,7 @@ export default function ClientPage() {
 
           {/* Credits Section */}
           <section
-            ref={(el) => { sectionRefs.current[7] = el; }}
+            ref={(el) => { sectionRefs.current[8] = el; }}
             id="credits"
             className="section relative border-t border-border/50"
             aria-labelledby="credits-heading"
@@ -1090,7 +1152,7 @@ export default function ClientPage() {
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ duration: 0.8 }}
               >
-                <span className="text-caption font-medium text-accent-gold">07 — CREDITS</span>
+                <span className="text-caption font-medium text-accent-gold">08 — CREDITS</span>
                 <h2 id="credits-heading" className="text-display-lg font-display font-light mt-2 mb-4 gradient-text">
                   Made With Care & Conviction
                 </h2>
