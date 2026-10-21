@@ -69,40 +69,55 @@ const voiceEntries = [
     speaker: 'Teesta Setalvad',
     role: 'Secretary, CJP',
     type: 'speech' as const,
-    audio: '/audio/teesta.wav',
-    transcript: 'We stand here at Jantar Mantar not just as protesters, but as witnesses. The instruments behind us measure time with precision. We demand that same precision in justice. Every day without an FIR is a day the Constitution bleeds.',
+    audio: '/audio/teesta.mp3',
+    transcript:
+      'हम यहाँ जंतर मंतर पर सिर्फ़ विरोध करने नहीं, बल्कि गवाह बनकर खड़े हैं। हमारे पीछे खड़े ये यंत्र समय को इतनी सटीकता से मापते हैं। हम माँग करते हैं कि न्याय में भी वही सटीकता हो। जिस दिन एफ आई आर दर्ज नहीं होती, उस दिन संविधान का खून बहता है।',
+    translation:
+      'We stand here at Jantar Mantar not just as protesters, but as witnesses. The instruments behind us measure time with precision. We demand that same precision in justice. Every day without an FIR is a day the Constitution bleeds.',
   },
   {
     id: 'harsh',
     speaker: 'Harsh Mander',
     role: 'Human Rights Activist',
     type: 'speech' as const,
-    audio: '/audio/harsh.wav',
-    transcript: 'This observatory was built to track celestial bodies. Today it tracks the moral cosmos of our republic. When the state turns against its citizens, every institution must become a site of resistance. Jantar Mantar now measures the distance between promise and performance.',
+    audio: '/audio/harsh.mp3',
+    transcript:
+      'यह वेधशाला आकाश के पिंडों को देखने के लिए बनाई गई थी। आज यह हमारे गणतंत्र के नैतिक आकाश को देख रही है। जब राज्य अपने ही नागरिकों के खिलाफ़ खड़ा हो जाए, तब हर संस्थान को प्रतिरोध की जगह बनना पड़ता है। जंतर मंतर अब वादे और उसके पूरा होने के बीच की दूरी नाप रहा है।',
+    translation:
+      'This observatory was built to track celestial bodies. Today it tracks the moral cosmos of our republic. When the state turns against its citizens, every institution must become a site of resistance. Jantar Mantar now measures the distance between promise and performance.',
   },
   {
     id: 'survivor-1',
     speaker: 'Anonymous Survivor',
     role: 'Victim of Violence',
     type: 'testimony' as const,
-    audio: '/audio/survivor.wav',
-    transcript: 'They came at night. We were sleeping. The sound of boots, the shouting, the tearing of tents. I saw them drag away my brother. We are not criminals. We are citizens asking for justice. Is that too much to ask?',
+    audio: '/audio/survivor.mp3',
+    transcript:
+      'वे रात में आए। हम सो रहे थे। जूतों की आवाज़, चीख़ें, तंबू फटने की आवाज़। मैंने देखा कि वे मेरे भाई को खींचकर ले गए। हम अपराधी नहीं हैं। हम नागरिक हैं, जो न्याय माँग रहे हैं। क्या यह माँगना बहुत ज़्यादा है?',
+    translation:
+      'They came at night. We were sleeping. The sound of boots, the shouting, the tearing of tents. I saw them drag away my brother. We are not criminals. We are citizens asking for justice. Is that too much to ask?',
   },
   {
     id: 'lawyer-1',
     speaker: 'Advocate Vrinda Grover',
     role: 'Legal Counsel',
     type: 'speech' as const,
-    audio: '/audio/lawyer.wav',
-    transcript: 'The law is clear. Section 154 CrPC mandates FIR registration. The Supreme Court in Lalita Kumari vs State of UP made it binding. Police refusal is not discretion — it is contempt. We will pursue every legal remedy.',
+    audio: '/audio/lawyer.mp3',
+    transcript:
+      'कानून स्पष्ट है। सी आर पी सी की धारा एक सौ चौवन में एफ आई आर दर्ज करना अनिवार्य है। सुप्रीम कोर्ट ने ललिता कुमारी बनाम उत्तर प्रदेश राज्य में इसे बाध्यकारी बनाया है। पुलिस का इनकार कोई विवेकाधिकार नहीं है। यह अदालत की अवमानना है। हम हर कानूनी रास्ता अपनाएँगे।',
+    translation:
+      'The law is clear. Section 154 CrPC mandates FIR registration. The Supreme Court in Lalita Kumari vs State of UP made it binding. Police refusal is not discretion — it is contempt. We will pursue every legal remedy.',
   },
   {
     id: 'chant-1',
     speaker: 'Protesters',
     role: 'Collective Voice',
     type: 'chant' as const,
-    audio: '/audio/chant.wav',
-    transcript: 'Nyay do, nyay do / Inquilab zindabad / Samvidhan bachao / Desh bachao / Hum kya chahte? Nyay! / Kab chahte? Abhi!',
+    audio: '/audio/chant.mp3',
+    transcript:
+      'न्याय दो! न्याय दो! इंक़लाब ज़िंदाबाद! संविधान बचाओ! देश बचाओ! हम क्या चाहते हैं? न्याय! कब चाहते हैं? अभी! अभी!',
+    translation:
+      'Give us justice, give us justice / Long live the revolution / Save the Constitution / Save the country / What do we want? Justice! / When do we want it? Now!',
   },
 ];
 
@@ -477,8 +492,9 @@ export default function ClientPage() {
                   Testimonies. Speeches. Silence.
                 </h2>
                 <p className="text-muted-foreground">
-                  The written record, read aloud. Every clip is a synthesized narration — not an
-                  original recording — and a full transcript sits beneath each voice.
+                  The written record, read aloud in Hindi. Every clip is a synthesized narration —
+                  not an original recording — with the Hindi text and an English translation beneath
+                  each voice.
                 </p>
               </motion.div>
 
@@ -486,8 +502,8 @@ export default function ClientPage() {
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-accent-gold" aria-hidden="true" />
                 <p className="text-sm leading-relaxed text-muted-foreground">
                   <span className="font-medium text-foreground">Audio note:</span> These voices are
-                  text-to-speech readings of the written testimony, not recordings of the actual
-                  event. They are labelled so they cannot be mistaken for archival audio.
+                  neural text-to-speech readings in Hindi, not recordings of the actual event. They
+                  are labelled so they cannot be mistaken for archival audio.
                 </p>
               </div>
 
@@ -514,7 +530,7 @@ export default function ClientPage() {
                       </div>
                       <div>
                         <h3 className="font-medium">{voice.speaker}</h3>
-                        <p className="text-caption text-muted-foreground">{voice.role} • Synthesized narration</p>
+                        <p className="text-caption text-muted-foreground">{voice.role} • Synthesized Hindi narration</p>
                       </div>
                     </div>
 
@@ -532,7 +548,17 @@ export default function ClientPage() {
                           animate={{ opacity: 1, height: 'auto' }}
                           transition={{ duration: 0.3 }}
                         >
-                          <p className="text-body-sm leading-relaxed">{voice.transcript}</p>
+                          <p lang="hi" className="text-body-sm leading-relaxed">
+                            {voice.transcript}
+                          </p>
+                          <div className="mt-4 border-t border-border/50 pt-3">
+                            <p className="mb-1 text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
+                              English translation
+                            </p>
+                            <p className="text-body-sm leading-relaxed text-muted-foreground">
+                              {voice.translation}
+                            </p>
+                          </div>
                         </motion.div>
                       </details>
                     </div>

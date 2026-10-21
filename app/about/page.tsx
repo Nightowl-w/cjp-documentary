@@ -16,6 +16,7 @@ const sections = [
     body: [
       'This documentary is assembled from public reporting, statements released by Citizens for Justice and Peace, court filings, and interviews conducted with organisers, lawyers, and survivors. Testimonies are presented as recorded; where anonymity was requested, identifying details have been withheld.',
       'The timeline reflects reported dates for the January 2024 demonstration and its aftermath. Disputed claims are attributed rather than presented as settled fact. The 3D reconstruction of Jantar Mantar is an interpretive visualisation, not a survey-grade model: proportions and placement are approximate and intended to convey scale and atmosphere.',
+      'The voice clips in this documentary are neural text-to-speech readings in Hindi of the written testimony. They are not archival recordings and are labelled as synthesized narration throughout the site.',
       'Corrections and additional testimony are welcome. Documentation is treated as a living record, and this page will note substantive updates as they are verified.',
     ],
   },
